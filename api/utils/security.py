@@ -1,27 +1,61 @@
+from jose import jwt, JWTError
 from passlib.context import CryptContext
+from fastapi import Request, HTTPException
+from functools import wraps
+from datetime import datetime, timedelta
+import os
+
+from api.services.user_service import get_user
 
 crypto_context = CryptContext(schemes=["argon2"], deprecated="auto")
+JWT_SECRET = os.getenv("JWT_SECRET")
+ALGORITHM = os.getenv("JWT_ALGORITHM", "HS512")
 
-def hash_password(password: str) -> str:
-    """
-    Hash a password using Argon2.
+if not JWT_SECRET:
+    raise RuntimeError("JWT_SECRET environment variable not set")
 
-    Args:
-        password (str): The password to hash.
+def protected_route(func):
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        # Extract Request from args or kwargs
+        request: Request = kwargs.get("request")
+        if request is None:
+            for arg in args:
+                if isinstance(arg, Request):
+                    request = arg
+                    break
+        if request is None:
+            raise HTTPException(status_code=400, detail="Request object not found")
 
-    Returns:
-        str: The hashed password.
-    """
-    match password:
-        case None | "":
-            raise ValueError("Password must not be empty")
-        case str() if len(password) < 8:
-            raise ValueError("Password must be at least 8 characters long")
-        case str() if not any(char.isdigit() for char in password):
-            raise ValueError("Password must contain at least one digit")
-        case str() if not any(char.isupper() for char in password):
-            raise ValueError("Password must contain at least one uppercase letter")
-        case str() if not any(char.islower() for char in password):
-            raise ValueError("Password must contain at least one lowercase letter")
-    
-    return crypto_context.hash(password)
+        # Extract Authorization header
+        auth_header = request.headers.get("Authorization")
+        if not auth_header or not auth_header.startswith("Bearer "):
+            raise HTTPException(status_code=401, detail="Missing or invalid Authorization header")
+
+        token = auth_header.split(" ")[1]
+
+        # Decode and validate JWT
+        try:
+            payload = jwt.decode(token, JWT_SECRET, algorithms=[ALGORITHM])
+        except JWTError as e:
+            raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
+
+        now_ts = int(datetime.now().timestamp())
+        if payload.get("exp", 0) < now_ts:
+            raise HTTPException(status_code=401, detail="Token has expired")
+        if payload.get("iat", 0) > now_ts:
+            raise HTTPException(status_code=401, detail="Token not yet valid")
+
+        user_id = payload.get("sub")
+        if not user_id:
+            raise HTTPException(status_code=401, detail="Token missing subject (sub) claim")
+
+        user = get_user(user_id=user_id)
+        if not user:
+            raise HTTPException(status_code=401, detail="User not found")
+
+        # Inject payload into kwargs if desired
+        kwargs["token_payload"] = payload
+        return await func(*args, **kwargs)
+
+    return wrapper
