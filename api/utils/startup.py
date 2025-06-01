@@ -1,6 +1,11 @@
 import os
 from dotenv import load_dotenv
 from api.utils.logging import logger
+from api.db import Base, engine
+
+
+def create_tables():
+    Base.metadata.create_all(bind=engine)
 
 
 def load_environment_variables():
@@ -18,4 +23,5 @@ def startup():
     Perform startup tasks such as loading environment variables.
     """
     load_environment_variables()
+    create_tables()
     logger.info("Startup tasks completed.")
