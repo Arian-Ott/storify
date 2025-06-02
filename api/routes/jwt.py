@@ -26,8 +26,7 @@ async def jwt_login(form_data: OAuth2PasswordRequestForm = Depends()):
 
     token = create_access_token(
         data={
-            "sub": user.username,
-            "uid": str(user.id),
+            "sub": str(user.id),
         }
     )
 
