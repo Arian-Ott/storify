@@ -1,12 +1,16 @@
-import os
+from api.utils.logging import logger
+from contextlib import contextmanager
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from contextlib import contextmanager
-from api.utils.logging import logger
+import os
 
-DATABASE_URL = f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}:{os.getenv('MYSQL_PORT')}/{os.getenv('MYSQL_DB')}"
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+load_dotenv(override=True)
+
+DATABASE_URL = f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}:{os.getenv('MYSQL_PORT')}/{os.getenv('MYSQL_DATABASE')}"
+
+engine = create_engine(DATABASE_URL)
 Base = declarative_base()
 
 
