@@ -4,9 +4,7 @@ from logging.handlers import RotatingFileHandler
 logger = logging.getLogger("api_logger")
 
 
-def setup_logging(
-    log_file="api.log", max_bytes=10 * 1024 * 1024, backup_count=5
-):
+def setup_logging(log_file="api.log", max_bytes=10 * 1024 * 1024, backup_count=5):
     """
     Set up logging configuration for the API.
 
