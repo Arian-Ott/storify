@@ -37,6 +37,7 @@ dev = [
     "pytest-asyncio",
     "httpx",
     "ruff",
+    "pytest-xdist",
 ]
 
 [project.scripts]
@@ -46,3 +47,7 @@ storify = "storify.cli:app"
 Homepage = "https://github.com/arian-ott/storify"
 Repository = "https://github.com/arian-ott/storify"
 Issues = "https://github.com/arian-ott/storify/issues"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-n auto"

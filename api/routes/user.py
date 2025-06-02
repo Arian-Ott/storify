@@ -38,7 +38,7 @@ async def route_delete_user(request: Request, token=Depends(oauth2_bearer)):
             content={"detail": "User deleted successfully"},
             status_code=204,
         )
-        resp.delete_cookie("access_token")  
+        resp.delete_cookie("access_token")
         return resp
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal server error {e}") from e
