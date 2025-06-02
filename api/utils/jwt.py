@@ -1,63 +1,59 @@
 import os
-from jose import jwt, JWTError
-from fastapi import Request, HTTPException
 from functools import wraps
-from api.services.user_service import get_user
-from datetime import datetime
-
-JWT_SECRET = os.getenv("JWT_SECRET")
-ALGORITHM = os.getenv("JWT_ALGORITHM", "HS512")
-
-if not JWT_SECRET:
-    raise RuntimeError("JWT_SECRET environment variable not set")
-
+from datetime import datetime, timedelta, timezone
+from fastapi import Request
+from fastapi.responses import RedirectResponse
+from fastapi.exceptions import HTTPException
+from api.services.jwt import verify_token, create_access_token
 
 def protected_route(func):
     @wraps(func)
-    async def wrapper(*args, **kwargs):
-        # Extract Request from args or kwargs
-        request: Request = kwargs.get("request")
-        if request is None:
-            for arg in args:
-                if isinstance(arg, Request):
-                    request = arg
-                    break
-        if request is None:
-            raise HTTPException(status_code=400, detail="Request object not found")
+    async def wrapper(request: Request, *args, **kwargs):
+        token = request.cookies.get("access_token")
+        
 
-        # Extract Authorization header
-        auth_header = request.headers.get("Authorization")
-        if not auth_header or not auth_header.startswith("Bearer "):
-            raise HTTPException(
-                status_code=401, detail="Missing or invalid Authorization header"
-            )
-
-        token = auth_header.split(" ")[1]
-
-        # Decode and validate JWT
-        try:
-            payload = jwt.decode(token, JWT_SECRET, algorithms=[ALGORITHM])
-        except JWTError as e:
-            raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
-
-        now_ts = int(datetime.now().timestamp())
-        if payload.get("exp", 0) < now_ts:
-            raise HTTPException(status_code=401, detail="Token has expired")
-        if payload.get("iat", 0) > now_ts:
-            raise HTTPException(status_code=401, detail="Token not yet valid")
-
-        user_id = payload.get("sub")
-        if not user_id:
-            raise HTTPException(
-                status_code=401, detail="Token missing subject (sub) claim"
-            )
-
-        user = get_user(user_id=user_id)
+        user = verify_token(token)
         if not user:
-            raise HTTPException(status_code=401, detail="User not found")
+            return "AAAAA"
 
-        # Inject payload into kwargs if desired
-        kwargs["token_payload"] = payload
-        return await func(*args, **kwargs)
+        exp = user.get("exp")
+        now = datetime.now(timezone.utc)
+        if not exp or datetime.fromtimestamp(exp, tz=timezone.utc) < now:
+            return "AAAAA"
+
+        # Renew token if it's expiring soon
+        if datetime.fromtimestamp(exp, tz=timezone.utc) < now + timedelta(minutes=10):
+            expires_minutes = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
+            new_token = create_access_token(
+                data={
+                    "sub": user["sub"],
+                    "role": user.get("role", []),
+                    "uid": user["uid"],
+                },
+                expires_delta=timedelta(minutes=expires_minutes),
+            )
+            response = RedirectResponse(url=request.url.path)
+            response.set_cookie("access_token", new_token, httponly=True)
+            return response
+
+        request.state.user = user
+        return await func(request, *args, **kwargs)
 
     return wrapper
+
+
+def requires_role(role):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(request: Request, *args, **kwargs):
+            token = request.cookies.get("access_token")
+            user = verify_token(token)
+
+            if not user or "role" not in user or role not in user["role"]:
+                raise HTTPException(status_code=403, detail="Forbidden")
+
+            request.state.user = user
+            return await func(request, *args, **kwargs)
+
+        return wrapper
+    return decorator

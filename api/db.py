@@ -14,7 +14,7 @@ engine = create_engine(DATABASE_URL)
 Base = declarative_base()
 
 
-@contextmanager
+
 def get_db():
     """
     Context manager to get a database session.
