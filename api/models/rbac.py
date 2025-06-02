@@ -11,7 +11,9 @@ class RoleModel(Base):
 
     __tablename__ = "roles"
 
-    name = Column(String(50), unique=True, nullable=False, index=True, primary_key=True)
+    name = Column(
+        String(50), unique=True, nullable=False, index=True, primary_key=True
+    )
     description = Column(String(255), nullable=True)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.now)

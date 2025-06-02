@@ -14,7 +14,9 @@ def load_environment_variables():
     Load environment variables from a .env file.
     """
     if not os.path.exists(".env"):
-        logger.warning(".env file not found. Ensure it exists in the project root.")
+        logger.warning(
+            ".env file not found. Ensure it exists in the project root."
+        )
 
     load_dotenv(verbose=True)
     logger.info("Environment variables loaded from .env file.")

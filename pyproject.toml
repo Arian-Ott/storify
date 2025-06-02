@@ -38,6 +38,7 @@ dev = [
     "httpx",
     "ruff",
     "pytest-xdist",
+    "pytest-cov",
 ]
 
 [project.scripts]
@@ -49,5 +50,7 @@ Repository = "https://github.com/arian-ott/storify"
 Issues = "https://github.com/arian-ott/storify/issues"
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = "-n auto"
+addopts = "-n auto -v"
+
+[tool.ruff]
+line-length = 80

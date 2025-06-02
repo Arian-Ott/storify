@@ -18,7 +18,8 @@ def delete_user():
     def _delete(user):
         jwt_token = (
             client.post(
-                "jwt/token", data={"username": user.username, "password": user.password}
+                "jwt/token",
+                data={"username": user.username, "password": user.password},
             )
             .json()
             .get("access_token")

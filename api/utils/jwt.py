@@ -13,7 +13,9 @@ def protected_route(func):
     async def wrapper(request: Request, *args, **kwargs):
         if not request.cookies:
             token = request.headers.get("Authorization")
-            token = token.split(" ")[1] if token and "Bearer " in token else None
+            token = (
+                token.split(" ")[1] if token and "Bearer " in token else None
+            )
         else:
             token = request.cookies.get("access_token")
         logger.debug(f"Token from cookies: {token}")
@@ -26,7 +28,9 @@ def protected_route(func):
         user = dict(verify_token(token))  # verify_token should raise if invalid
         exp = user.get("exp")
         now = datetime.now()
-        logger.debug(f"Now: {now}, Token expiration: {datetime.fromtimestamp(exp)}")
+        logger.debug(
+            f"Now: {now}, Token expiration: {datetime.fromtimestamp(exp)}"
+        )
 
         if (
             not exp

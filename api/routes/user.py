@@ -22,7 +22,9 @@ async def route_create_user(user: UserCreate):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal server error") from e
+        raise HTTPException(
+            status_code=500, detail="Internal server error"
+        ) from e
 
 
 @user_router.delete("/users/")
@@ -41,4 +43,6 @@ async def route_delete_user(request: Request, token=Depends(oauth2_bearer)):
         resp.delete_cookie("access_token")
         return resp
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Internal server error {e}") from e
+        raise HTTPException(
+            status_code=500, detail=f"Internal server error {e}"
+        ) from e
