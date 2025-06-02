@@ -1,5 +1,4 @@
 from api.utils.logging import logger
-from contextlib import contextmanager
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,7 +11,6 @@ DATABASE_URL = f"mysql+pymysql://{os.getenv('MYSQL_USER')}:{os.getenv('MYSQL_PAS
 
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
-
 
 
 def get_db():

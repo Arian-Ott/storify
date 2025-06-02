@@ -1,20 +1,12 @@
 from fastapi import APIRouter
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends
-from fastapi import Request
 from fastapi.security import OAuth2PasswordRequestForm
 from api.services.user_service import get_user
-from api.schemas.user_schemas import UserCreate
 from fastapi import HTTPException
-from api.utils.security import  verify_password
-from api.utils.jwt import create_access_token
-
-
-from fastapi import APIRouter, Depends, HTTPException, Request
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from api.services.user_service import get_user
 from api.utils.security import verify_password
 from api.utils.jwt import create_access_token
+
 
 jwt_router = APIRouter(prefix="/jwt", tags=["jwt"])
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="/jwt/token")
@@ -39,7 +31,4 @@ async def jwt_login(form_data: OAuth2PasswordRequestForm = Depends()):
         }
     )
 
-    return {
-        "access_token": token,
-        "token_type": "bearer"
-    }
+    return {"access_token": token, "token_type": "bearer"}

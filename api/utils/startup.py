@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from api.utils.logging import logger
 from api.db import Base, engine
+from api.utils.logging import setup_logging
 
 
 def create_tables():
@@ -23,6 +24,7 @@ def startup():
     """
     Perform startup tasks such as loading environment variables.
     """
+    setup_logging()
     load_environment_variables()
     create_tables()
     logger.info("Startup tasks completed.")

@@ -3,7 +3,7 @@ from api.db import get_db
 from api.utils.security import hash_password
 from uuid import UUID
 from api.schemas.user_schemas import UserCreate
-from sqlalchemy.orm import load_only
+
 
 def create_user(user: UserCreate):
     username = user.username
@@ -26,10 +26,16 @@ def get_user(user_id: str | UUID | None = None, username: str | None = None):
         if not user_id and not username:
             raise ValueError("Either user_id or username must be provided")
 
-        query = db.query(UserModel).filter(UserModel.username == username) if username else db.query(UserModel).filter(UserModel.id == user_id)
-        
+        query = (
+            db.query(UserModel).filter(UserModel.username == username)
+            if username
+            else db.query(UserModel).filter(UserModel.id == user_id)
+        )
+
         user = query.first()
     return user
+
+
 def delete_user(user_id: str | UUID):
     with next(get_db()) as db:
         if isinstance(user_id, str):

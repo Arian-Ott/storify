@@ -27,5 +27,3 @@ def test_duplicate_user_creation():
         assert "Username already exists" in response.text, (
             f"Expected 'Username already exists' error for {user.username}, got {response.text}"
         )
-        
-

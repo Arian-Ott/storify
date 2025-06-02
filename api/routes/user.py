@@ -1,11 +1,13 @@
 from fastapi import APIRouter
 from api.schemas.user_schemas import UserCreate
-from api.services.user_service import create_user,delete_user
+from api.services.user_service import create_user
 from fastapi import HTTPException
 from api.utils.jwt import protected_route
 from fastapi import Depends
 from fastapi import Request
 from api.routes.jwt import oauth2_bearer
+from api.utils.logging import logger
+
 user_router = APIRouter(prefix="/auth", tags=["users"])
 
 
@@ -21,11 +23,11 @@ async def route_create_user(user: UserCreate):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error") from e
-    
+
 
 @user_router.delete("/users/")
 @protected_route
-async def route_delete_user(request: Request, token_payload:dict,token = Depends(oauth2_bearer)):
-    print(token_payload)
+async def route_delete_user(request: Request, token=Depends(oauth2_bearer)):
+    logger.debug(f"Request user: {request.state.user}")
+    logger.debug(f"Token: {token}")
     return "AA"
-    

@@ -5,3 +5,4 @@ storify.egg-info
 build/
 ruff_cache/
 .pytest_cache/
+api.log
