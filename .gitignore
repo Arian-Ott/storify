@@ -8,3 +8,4 @@ build/
 api.log
 .coverage
 s4
+.vscode
