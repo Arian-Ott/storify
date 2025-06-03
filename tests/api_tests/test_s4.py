@@ -1,4 +1,3 @@
-import pytest
 from api.models import s4
 
 def test_s4model_fields():
