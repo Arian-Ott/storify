@@ -1,6 +1,6 @@
 from api.models.user import UserModel
 from api.db import get_db
-from api.utils.security import hash_password
+from api.utils.security import hash_password, verify_password
 from uuid import UUID
 from api.schemas.user_schemas import UserCreate
 
@@ -45,3 +45,18 @@ def delete_user(user_id: str | UUID):
             raise ValueError("User not found")
         db.delete(user)
         db.commit()
+
+def change_password(user_id: str | UUID, new_password: str):
+    with next(get_db()) as db:
+        if isinstance(user_id, str):
+            user_id = UUID(user_id)
+        user = db.query(UserModel).filter(UserModel.id == user_id).first()
+        if not user:
+            raise ValueError("User not found")
+        
+        if verify_password(new_password, user.password):
+            raise ValueError("New password cannot be the same as the old password")
+        user.password = hash_password(new_password)
+        db.commit()
+        db.refresh(user)
+        return user
