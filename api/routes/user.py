@@ -6,7 +6,7 @@ from api.utils.jwt import protected_route
 from fastapi import Depends
 from fastapi import Request
 from api.routes.jwt import oauth2_bearer
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse,
 
 user_router = APIRouter(prefix="/auth", tags=["users"])
 

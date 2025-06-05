@@ -4,7 +4,7 @@ from api.utils.startup import startup
 from api.routes.jwt import jwt_router
 from api.routes.s4_router import s4_router
 from dotenv import load_dotenv
-
+from starlette.middleware.cors import CORSMiddleware
 load_dotenv()
 
 app = FastAPI()
@@ -12,6 +12,14 @@ app.add_event_handler("startup", startup)
 app.include_router(user_router)
 app.include_router(jwt_router)
 app.include_router(s4_router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this to your needs
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 if __name__ == "__main__":
     import uvicorn
