@@ -18,11 +18,13 @@ async def jwt_login(form_data: OAuth2PasswordRequestForm = Depends()):
     Login and return a JWT token (OAuth2-compatible).
     """
     user = get_user(username=form_data.username)
+    
     if not user or not verify_password(form_data.password, user.password):
         raise HTTPException(
             status_code=400,
             detail="Incorrect username or password",
         )
+    
 
     token = create_access_token(
         data={

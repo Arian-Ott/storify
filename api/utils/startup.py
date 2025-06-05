@@ -3,7 +3,21 @@ from dotenv import load_dotenv
 from api.utils.logging import logger
 from api.db import Base, engine
 from api.utils.logging import setup_logging
+from api.services.user_service import create_user, get_user
+from api.schemas.user_schemas import UserCreate
 
+def create_admin_user():
+    if get_user(username="storify_admin"):
+        logger.info("Admin user already exists. Skipping creation.")
+        return
+    admin_user = UserCreate(
+        username="storify_admin",
+        password="changeme_later",
+    )
+    create_user(admin_user)
+    logger.info("Admin user created successfully.")
+
+    
 
 def create_tables():
     Base.metadata.create_all(bind=engine)
@@ -37,4 +51,5 @@ def startup():
     create_storage_path()
     load_environment_variables()
     create_tables()
+    create_admin_user()
     logger.info("Startup tasks completed.")
