@@ -3,15 +3,26 @@ from api.routes.user import user_router
 from api.utils.startup import startup
 from api.routes.jwt import jwt_router
 from api.routes.s4_router import s4_router
+from fastapi.staticfiles import StaticFiles
+from api.routes.html_router import html_router
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 load_dotenv()
+import os
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="frontend/static/"), name="static")
 app.add_event_handler("startup", startup)
 app.include_router(user_router)
 app.include_router(jwt_router)
 app.include_router(s4_router)
+from fastapi.staticfiles import StaticFiles
+
+
+
+
+app.include_router(html_router)
 
 app.add_middleware(
     CORSMiddleware,
