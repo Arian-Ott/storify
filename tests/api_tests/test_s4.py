@@ -1,5 +1,6 @@
 from api.models import s4
 
+
 def test_s4model_fields():
     model = s4.S4Model()
     # Check default values
@@ -11,6 +12,7 @@ def test_s4model_fields():
     # Check default compressed value
     assert model.compressed is False
 
+
 def test_s4symlink_fields():
     symlink = s4.S4Symlink()
     assert hasattr(symlink, "id")
@@ -20,8 +22,10 @@ def test_s4symlink_fields():
     assert hasattr(symlink, "created_at")
     assert hasattr(symlink, "updated_at")
 
+
 def test_s4model_tablename():
     assert s4.S4Model.__tablename__ == "s4_storage"
+
 
 def test_s4symlink_tablename():
     assert s4.S4Symlink.__tablename__ == "s4_symlink"

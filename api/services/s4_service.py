@@ -50,8 +50,6 @@ def create_file(
     }
 
 
-
-
 def get_file(file_id: str):
     file_id = uuid.UUID(file_id)
     with next(get_db()) as db:

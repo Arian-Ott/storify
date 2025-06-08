@@ -29,6 +29,8 @@ dependencies = [
     "passlib",
     "pymysql",
     "python-dotenv",
+    "requests",
+    "jinja2",
 ]
 
 [project.optional-dependencies]

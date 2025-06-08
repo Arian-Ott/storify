@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Essential Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Site - Fast, Modern, and Accessible{% endblock %}</title>
+    <meta name="description" content="{% block description %}Welcome to MySite, a fast and responsive web app powered by Tailwind and Jinja2.{% endblock %}">
+    <meta name="keywords" content="MySite, Tailwind CSS, Jinja2, Responsive Design, Dark Mode, SEO">
+    <meta name="author" content="Arian Ott">
+
+    <!-- Open Graph for social previews -->
+    <meta property="og:title" content="{% block og_title %}My Site{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Welcome to MySite, a modern responsive web app.{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{% block og_url %}{{ request.url }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}/static/img/social-preview.png{% endblock %}">
+
+    <!-- Tailwind and Custom Scripts -->
+    <script src="/static/tailwind.js"></script>
+    <script src="/static/current_year.js" defer></script>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.url }}">
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow">
+
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        AOS.init({ duration: 800, once: true });
+      });
+    </script>
+</head>
+
+<body class="bg-slate-900 text-neutral-100 flex flex-col min-h-screen" itemscope itemtype="http://schema.org/WebPage">
+
+    {% include 'navbar.html' %}
+
+    <main class="p-6 md:p-8 lg:p-12 flex-grow" role="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-neutral-400 text-sm py-6 mt-12 border-t border-gray-700" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>&copy; <span id="current_year"></span> <span itemprop="copyrightHolder">MySite</span>. All rights reserved.</p>
+            <nav aria-label="Footer Navigation" class="space-x-4">
+                <a href="/privacy" class="hover:text-blue-400 transition-colors" rel="nofollow">Privacy</a>
+                <a href="/terms" class="hover:text-blue-400 transition-colors" rel="nofollow">Terms</a>
+                <a href="/contact" class="hover:text-blue-400 transition-colors">Contact</a>
+            </nav>
+        </div>
+    </footer>
+</body>
+</html>
