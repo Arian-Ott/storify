@@ -1,27 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Essential Meta Tags -->
     <meta charset="UTF-8">
-    <title>{% block title %}My Site{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/static/current_year.js"></script>
+    <title>{% block title %}My Site - Fast, Modern, and Accessible{% endblock %}</title>
+    <meta name="description" content="{% block description %}Welcome to MySite, a fast and responsive web app powered by Tailwind and Jinja2.{% endblock %}">
+    <meta name="keywords" content="MySite, Tailwind CSS, Jinja2, Responsive Design, Dark Mode, SEO">
+    <meta name="author" content="Arian Ott">
+
+    <!-- Open Graph for social previews -->
+    <meta property="og:title" content="{% block og_title %}My Site{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Welcome to MySite, a modern responsive web app.{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{% block og_url %}{{ request.url }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}/static/img/social-preview.png{% endblock %}">
+
+    <!-- 
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}My Site{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Modern, fast, responsive web app using Tailwind and Jinja2.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}/static/img/social-preview.png{% endblock %}">
+-->
+    <!-- Favicons -->
+    <!--<link rel="icon" href="/static/favicon.ico" type="image/x-icon"> -->
+
+    <!-- Tailwind and Custom Scripts -->
+    <script src="/static/tailwind.js"></script>
+    <script src="/static/current_year.js" defer></script>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ request.url }}">
+
+    <!-- Robots -->
+    <meta name="robots" content="index, follow">
 </head>
-<body class="bg-gray-900 text-white flex flex-col min-h-screen">
+<body class="bg-gray-900 text-white flex flex-col min-h-screen" itemscope itemtype="http://schema.org/WebPage">
+
     {% include 'navbar.html' %}
 
-    <main class="p-4 flex-grow">
+    <main class="p-4 flex-grow" role="main">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-gray-800 text-gray-400 text-sm py-4 mt-8">
+    <footer class="bg-gray-800 text-gray-400 text-sm py-4 mt-8" role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-            <p>&copy; <span id="current_year"></span> MySite. All rights reserved.</p>
-            <div class="space-x-4 mt-2 md:mt-0">
-                <a href="/privacy" class="hover:text-white">Privacy</a>
-                <a href="/terms" class="hover:text-white">Terms</a>
+            <p>&copy; <span id="current_year"></span> <span itemprop="copyrightHolder">MySite</span>. All rights reserved.</p>
+            <nav aria-label="Footer Navigation" class="space-x-4 mt-2 md:mt-0">
+                <a href="/privacy" class="hover:text-white" rel="nofollow">Privacy</a>
+                <a href="/terms" class="hover:text-white" rel="nofollow">Terms</a>
                 <a href="/contact" class="hover:text-white">Contact</a>
-            </div>
+            </nav>
         </div>
     </footer>
 </body>

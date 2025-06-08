@@ -7,11 +7,12 @@ from fastapi.staticfiles import StaticFiles
 from api.routes.html_router import html_router
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 load_dotenv()
 import os
 
 app = FastAPI()
-
+app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
 app.mount("/static", StaticFiles(directory="frontend/static/"), name="static")
 app.add_event_handler("startup", startup)
 app.include_router(user_router)
