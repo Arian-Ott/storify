@@ -9,4 +9,4 @@ api.log
 .coverage
 s4
 .vscode
-static/tailwind.js
+frontend/static/tailwind.js

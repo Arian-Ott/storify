@@ -68,3 +68,13 @@ async def route_sign_out(request: Request):
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal server error {e}") from e
+
+@html_router.get("/dashboard", response_class=HTMLResponse)
+@protected_route
+async def route_dashboard(request: Request):
+    """
+    Render the dashboard page.
+    """
+    user = request.state.user
+    username = user.get("username", "Guest")
+    return html_resp(request, "dashboard.html", {"username": username})
