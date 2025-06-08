@@ -54,6 +54,7 @@ async def route_login(request: Request):
 
 
 @html_router.get("/sign-out")
+@protected_route
 async def route_sign_out(request: Request):
     """
     Sign out the user by deleting the JWT token cookie.
@@ -75,6 +76,16 @@ async def route_dashboard(request: Request):
     """
     Render the dashboard page.
     """
-    user = request.state.user
-    username = user.get("username", "Guest")
-    return html_resp(request, "dashboard.html", {"username": username})
+    
+    username = verify_token(request.cookies.get("access_token")).get("username", "Guest")
+    print(f"Dashboard accessed by user: {username}")
+    return html_resp(request, "dashboard/dashboard.html", {"username": username})
+
+
+@html_router.get("/storify", response_class=HTMLResponse)
+@protected_route
+async def route_storify(request: Request):
+    """
+    Render the Storify page.
+    """
+    return html_resp(request, "dashboard/storify.html")

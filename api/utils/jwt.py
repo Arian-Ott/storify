@@ -6,8 +6,6 @@ from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.exceptions import HTTPException
 from api.services.jwt import verify_token, create_access_token
 from api.utils.logging import logger
-
-
 def protected_route(func):
     @wraps(func)
     async def wrapper(request: Request, *args, **kwargs):
