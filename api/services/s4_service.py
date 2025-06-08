@@ -99,3 +99,29 @@ def delete_unlinked_files(unlinked_files):
                 os.remove(file_path)
 
 
+def get_all_files():
+    with next(get_db()) as db:
+        symlinks = db.query(S4Symlink).all()
+    return [
+        {
+            "id": str(symlink.id),
+            "file_name": symlink.file_name,
+            "created_at": symlink.created_at,
+            "updated_at": symlink.updated_at,
+        }
+        for symlink in symlinks
+    ]
+    
+def get_symlinks_by_user(user_id: str):
+    user_id = uuid.UUID(user_id)
+    with next(get_db()) as db:
+        symlinks = db.query(S4Symlink).filter(S4Symlink.user_id == user_id).all()
+    return [
+        {
+            "id": str(symlink.id),
+            "file_name": symlink.file_name,
+            "created_at": symlink.created_at,
+            "updated_at": symlink.updated_at,
+        }
+        for symlink in symlinks
+    ]
