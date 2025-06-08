@@ -28,6 +28,10 @@ class S4Symlink(Base):
     file_name = Column(String(255), nullable=False, unique=False, index=True)
 
     source = relationship("S4Model", foreign_keys=[source_id])
-
+    user_id = Column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=True,
+    )
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
