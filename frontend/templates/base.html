@@ -16,15 +16,6 @@
     <meta property="og:url" content="{% block og_url %}{{ request.url }}{% endblock %}">
     <meta property="og:image" content="{% block og_image %}/static/img/social-preview.png{% endblock %}">
 
-    <!-- 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{% block twitter_title %}My Site{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}Modern, fast, responsive web app using Tailwind and Jinja2.{% endblock %}">
-    <meta name="twitter:image" content="{% block twitter_image %}/static/img/social-preview.png{% endblock %}">
--->
-    <!-- Favicons -->
-    <!--<link rel="icon" href="/static/favicon.ico" type="image/x-icon"> -->
-
     <!-- Tailwind and Custom Scripts -->
     <script src="/static/tailwind.js"></script>
     <script src="/static/current_year.js" defer></script>
@@ -34,22 +25,32 @@
 
     <!-- Robots -->
     <meta name="robots" content="index, follow">
+
+    <!-- AOS Animations -->
+    <link href="https://unpkg.com/aos@next/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        AOS.init({ duration: 800, once: true });
+      });
+    </script>
 </head>
-<body class="bg-gray-900 text-white flex flex-col min-h-screen" itemscope itemtype="http://schema.org/WebPage">
+
+<body class="bg-slate-900 text-neutral-100 flex flex-col min-h-screen" itemscope itemtype="http://schema.org/WebPage">
 
     {% include 'navbar.html' %}
 
-    <main class="p-4 flex-grow" role="main">
+    <main class="p-6 md:p-8 lg:p-12 flex-grow" role="main">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-gray-800 text-gray-400 text-sm py-4 mt-8" role="contentinfo">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+    <footer class="bg-gray-800 text-neutral-400 text-sm py-6 mt-12 border-t border-gray-700" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p>&copy; <span id="current_year"></span> <span itemprop="copyrightHolder">MySite</span>. All rights reserved.</p>
-            <nav aria-label="Footer Navigation" class="space-x-4 mt-2 md:mt-0">
-                <a href="/privacy" class="hover:text-white" rel="nofollow">Privacy</a>
-                <a href="/terms" class="hover:text-white" rel="nofollow">Terms</a>
-                <a href="/contact" class="hover:text-white">Contact</a>
+            <nav aria-label="Footer Navigation" class="space-x-4">
+                <a href="/privacy" class="hover:text-blue-400 transition-colors" rel="nofollow">Privacy</a>
+                <a href="/terms" class="hover:text-blue-400 transition-colors" rel="nofollow">Terms</a>
+                <a href="/contact" class="hover:text-blue-400 transition-colors">Contact</a>
             </nav>
         </div>
     </footer>
