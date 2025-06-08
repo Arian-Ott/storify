@@ -1,12 +1,14 @@
 from fastapi import APIRouter
-from api.schemas.user_schemas import UserCreate
+from api.schemas.user_schemas import UserCreate, UserMultipartCreate
 from api.services.user_service import create_user, delete_user
 from fastapi import HTTPException
 from api.utils.jwt import protected_route
 from fastapi import Depends
 from fastapi import Request
 from api.routes.jwt import oauth2_bearer
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi import Form
+from api.utils.jwt import visitors
 
 user_router = APIRouter(prefix="/auth", tags=["users"])
 
@@ -16,6 +18,7 @@ async def route_create_user(user: UserCreate):
     """
     Create a new user.
     """
+
     try:
         usr = create_user(user)
         return usr
@@ -24,6 +27,27 @@ async def route_create_user(user: UserCreate):
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error") from e
 
+@user_router.post("/users/multipart/")
+@visitors(redirect_to="/dashboard")
+async def route_create_user_multipart(request: Request,
+    username: str = Form(..., min_length=3, max_length=50),
+    password: str = Form(..., min_length=8)
+):
+    """
+    Create a new user using multipart form data.
+    """
+    
+    try:
+        user = UserMultipartCreate(username=username, password=password)
+        usr = create_user(user)
+        return RedirectResponse(
+            "/login",
+            status_code=303,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error") from e
 
 @user_router.delete("/users/")
 @protected_route
