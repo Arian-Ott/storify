@@ -6,6 +6,7 @@ from fastapi import Request
 from fastapi import Form
 from api.utils.jwt import verify_token
 from fastapi.responses import RedirectResponse
+
 s4_router = APIRouter(prefix="/s4")
 
 
@@ -22,7 +23,9 @@ async def upload_file(
 
 
 @s4_router.get("/s4_storage/{file_id}")
-async def api_get_file(file_id: str, ):
+async def api_get_file(
+    file_id: str,
+):
     """
     Retrieve a file by its ID.
     """
@@ -31,11 +34,12 @@ async def api_get_file(file_id: str, ):
         return file_data
     raise HTTPException(status_code=501, detail="Not implemented yet")
 
+
 @s4_router.post("/s4_storage/multipart")
 @protected_route
 async def api_upload_file_multipart(
     request: Request,
-    file: UploadFile ,
+    file: UploadFile,
     file_name: str = Form(...),
 ):
     """
@@ -51,7 +55,12 @@ async def api_upload_file_multipart(
     token = verify_token(token)
     user_id = token.get("sub")
 
-    create_file(file_name,user_id, file_bytes, file.content_type,)
+    create_file(
+        file_name,
+        user_id,
+        file_bytes,
+        file.content_type,
+    )
     return RedirectResponse(
         url="/assets",
         status_code=303,

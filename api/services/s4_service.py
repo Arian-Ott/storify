@@ -12,7 +12,10 @@ S4_STORAGE_LOCATION = os.getenv("S4_STORAGE_LOCATION", "s4")
 
 
 def create_file(
-    file_name: str, user_id,file_bytes: bytes, file_type: str = "application/octet-stream"
+    file_name: str,
+    user_id,
+    file_bytes: bytes,
+    file_type: str = "application/octet-stream",
 ):
     file_id = uuid.uuid4()
     file_hash = sha3_256(file_bytes).hexdigest()
@@ -111,7 +114,8 @@ def get_all_files():
         }
         for symlink in symlinks
     ]
-    
+
+
 def get_symlinks_by_user(user_id: str):
     user_id = uuid.UUID(user_id)
     with next(get_db()) as db:

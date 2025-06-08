@@ -25,7 +25,7 @@ def download_latest_tailwind():
     if not os.path.exists("frontend/static/"):
         os.makedirs("frontend/static/")
         logger.info("Created directory for Tailwind CSS.")
-    
+
     with open("frontend/static/tailwind.js", "w", encoding="utf-8") as f:
         f.write(js)
 

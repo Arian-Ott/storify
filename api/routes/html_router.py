@@ -9,6 +9,7 @@ from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi import HTTPException
 from api.utils.jwt import protected_route
 from api.services.s4_service import get_symlinks_by_user
+
 html_router = APIRouter(tags=["html"])
 templates = Jinja2Templates(directory="frontend/templates", auto_reload=True)
 
@@ -71,14 +72,17 @@ async def route_sign_out(request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal server error {e}") from e
 
+
 @html_router.get("/dashboard", response_class=HTMLResponse)
 @protected_route
 async def route_dashboard(request: Request):
     """
     Render the dashboard page.
     """
-    
-    username = verify_token(request.cookies.get("access_token")).get("username", "Guest")
+
+    username = verify_token(request.cookies.get("access_token")).get(
+        "username", "Guest"
+    )
     print(f"Dashboard accessed by user: {username}")
     return html_resp(request, "dashboard/dashboard.html", {"username": username})
 
@@ -90,6 +94,7 @@ async def route_storify(request: Request):
     Render the Storify page.
     """
     return html_resp(request, "dashboard/storify.html")
+
 
 @html_router.get("/assets", response_class=HTMLResponse)
 @protected_route
