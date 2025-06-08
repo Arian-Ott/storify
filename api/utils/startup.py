@@ -25,7 +25,7 @@ def download_latest_tailwind():
     if not os.path.exists("frontend/static/"):
         os.makedirs("frontend/static/")
         logger.info("Created directory for Tailwind CSS.")
-    os.remove("frontend/static/tailwind.js")
+
     with open("frontend/static/tailwind.js", "w", encoding="utf-8") as f:
         f.write(js)
 
@@ -59,9 +59,9 @@ def startup():
     Perform startup tasks such as loading environment variables.
     """
     setup_logging()
+    download_latest_tailwind()
     create_storage_path()
     load_environment_variables()
     create_tables()
     create_admin_user()
-    download_latest_tailwind()
     logger.info("Startup tasks completed.")

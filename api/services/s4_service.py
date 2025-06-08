@@ -12,7 +12,10 @@ S4_STORAGE_LOCATION = os.getenv("S4_STORAGE_LOCATION", "s4")
 
 
 def create_file(
-    file_name: str, file_bytes: bytes, file_type: str = "application/octet-stream"
+    file_name: str,
+    user_id,
+    file_bytes: bytes,
+    file_type: str = "application/octet-stream",
 ):
     file_id = uuid.uuid4()
     file_hash = sha3_256(file_bytes).hexdigest()
@@ -36,6 +39,7 @@ def create_file(
             id=file_id,
             source_id=file_id if not existing_file else existing_file.id,
             file_name=file_name,
+            user_id=uuid.UUID(user_id),
         )
         db.add(symlink)
         db.commit()
@@ -96,3 +100,32 @@ def delete_unlinked_files(unlinked_files):
             file_path = os.path.join(S4_STORAGE_LOCATION, f"{file_id}.xz")
             if os.path.exists(file_path):
                 os.remove(file_path)
+
+
+def get_all_files():
+    with next(get_db()) as db:
+        symlinks = db.query(S4Symlink).all()
+    return [
+        {
+            "id": str(symlink.id),
+            "file_name": symlink.file_name,
+            "created_at": symlink.created_at,
+            "updated_at": symlink.updated_at,
+        }
+        for symlink in symlinks
+    ]
+
+
+def get_symlinks_by_user(user_id: str):
+    user_id = uuid.UUID(user_id)
+    with next(get_db()) as db:
+        symlinks = db.query(S4Symlink).filter(S4Symlink.user_id == user_id).all()
+    return [
+        {
+            "id": str(symlink.id),
+            "file_name": symlink.file_name,
+            "created_at": symlink.created_at,
+            "updated_at": symlink.updated_at,
+        }
+        for symlink in symlinks
+    ]

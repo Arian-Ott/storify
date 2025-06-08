@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Storify{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="bg-slate-800 py-28 shadow-lg" data-aos="fade-up">
+  <div class="container mx-auto px-4 text-center max-w-3xl" data-aos="fade-up">
+    <h1 class="text-5xl font-extrabold mb-3 leading-tight text-white">
+      Hello, <span class="text-blue-500">{{ username }}</span>!
+    </h1>
+    <p class="text-lg mb-6 italic text-neutral-300">
+      Welcome to your dashboard.
+    </p>
+    <p class="text-xl mb-10 text-neutral-400">
+      Here you can manage your content, settings, and more.
+    </p>
+    
+  </div>
+</section>
+
+
+<section class="py-16 bg-slate-900" data-aos="fade-up">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+  
+      <div class="bg-slate-700 p-6 rounded-2xl shadow-lg text-center text-white" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="text-2xl font-bold mb-4">Storify your assets</h2>
+        <p class="mb-6 text-slate-300">Start serving your assets with storify. Simply upload an asset and share the link.</p>
+        <a href="/storify" class="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-6 rounded-xl transition">Storify Wizard</a>
+      </div>
+
+      <div class="bg-slate-700 p-6 rounded-2xl shadow-lg text-center text-white" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="text-2xl font-bold mb-4">Asset manager</h2>
+        <p class="mb-6 text-slate-300">Manage your assets</p>
+        <a href="/analytics" class="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-6 rounded-xl transition">Asset manager</a>
+      </div>
+
+      
+      <div class="bg-slate-700 p-6 rounded-2xl shadow-lg text-center text-white" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="text-2xl font-bold mb-4">Account Settings</h2>
+        <p class="mb-6 text-slate-300">Update your profile, preferences, and account security settings.</p>
+        <a href="/settings" class="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-6 rounded-xl transition">Settings</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

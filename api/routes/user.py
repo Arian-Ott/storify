@@ -98,14 +98,17 @@ async def route_login_user(
         token = create_access_token(
             data={
                 "sub": str(user.id),
+                "username": user.username,
             }
         )
 
         response = RedirectResponse(
-            url="/",
+            url="/dashboard",
             status_code=303,
         )
+
         response.set_cookie("access_token", token, httponly=True)
+
         return response
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
