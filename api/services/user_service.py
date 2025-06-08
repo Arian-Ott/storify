@@ -46,6 +46,7 @@ def delete_user(user_id: str | UUID):
         db.delete(user)
         db.commit()
 
+
 def change_password(user_id: str | UUID, new_password: str):
     with next(get_db()) as db:
         if isinstance(user_id, str):
@@ -53,7 +54,7 @@ def change_password(user_id: str | UUID, new_password: str):
         user = db.query(UserModel).filter(UserModel.id == user_id).first()
         if not user:
             raise ValueError("User not found")
-        
+
         if verify_password(new_password, user.password):
             raise ValueError("New password cannot be the same as the old password")
         user.password = hash_password(new_password)

@@ -84,3 +84,22 @@ def requires_role(role):
         return wrapper
 
     return decorator
+
+
+def visitors(redirect_to):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(request: Request, *args, **kwargs):
+            token = request.cookies.get("access_token")
+            if not token:
+                return await func(request, *args, **kwargs)
+
+            user = verify_token(token)
+            if user:
+                return RedirectResponse(url=redirect_to)
+
+            return await func(request, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
