@@ -18,4 +18,3 @@ class UserModel(Base):
     created_at = Column(DateTime, default=datetime.now)
     last_password_change = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
-    

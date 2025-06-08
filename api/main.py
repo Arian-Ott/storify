@@ -8,6 +8,7 @@ from api.routes.html_router import html_router
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+
 load_dotenv()
 import os
 
@@ -19,8 +20,6 @@ app.include_router(user_router)
 app.include_router(jwt_router)
 app.include_router(s4_router)
 from fastapi.staticfiles import StaticFiles
-
-
 
 
 app.include_router(html_router)

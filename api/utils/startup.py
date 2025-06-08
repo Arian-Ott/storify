@@ -6,6 +6,8 @@ from api.utils.logging import setup_logging
 from api.services.user_service import create_user, get_user
 from api.schemas.user_schemas import UserCreate
 import requests
+
+
 def create_admin_user():
     if get_user(username="storify_admin"):
         logger.info("Admin user already exists. Skipping creation.")
@@ -17,16 +19,16 @@ def create_admin_user():
     create_user(admin_user)
     logger.info("Admin user created successfully.")
 
+
 def download_latest_tailwind():
-    js = requests.get(
-        "https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"
-    ).text
+    js = requests.get("https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4").text
     if not os.path.exists("frontend/static/"):
         os.makedirs("frontend/static/")
         logger.info("Created directory for Tailwind CSS.")
     os.remove("frontend/static/tailwind.js")
     with open("frontend/static/tailwind.js", "w", encoding="utf-8") as f:
         f.write(js)
+
 
 def create_tables():
     Base.metadata.create_all(bind=engine)
