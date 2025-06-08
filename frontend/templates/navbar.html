@@ -10,13 +10,17 @@
                     <a href="/contact" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
                 </div>
             </div>
-
-            <!-- Right Side Auth Buttons -->
+            {% if logged_in %}    
+            <div class="hidden md:flex space-x-4">
+                <a href="/sign-out" class="bg-gray-100 text-gray-900 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors">Sign Out</a>
+                <a href="/dashboard" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-500 transition-colors">Dashboard</a>
+            </div>
+            {%else%}
             <div class="hidden md:flex space-x-4">
                 <a href="/login" class="bg-gray-100 text-gray-900 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors">Login</a>
                 <a href="/register" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-500 transition-colors">Register</a>
             </div>
-
+            {%endif%}
             <!-- Mobile Toggle -->
             <div class="-mr-2 flex md:hidden">
                 <button id="mobile-menu-toggle" class="text-gray-300 hover:text-indigo-400 focus:outline-none transition-colors text-2xl">
@@ -31,8 +35,13 @@
         <a href="/" class="block text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-base font-medium transition-colors">Home</a>
         <a href="/about" class="block text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-base font-medium transition-colors">About</a>
         <a href="/contact" class="block text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-base font-medium transition-colors">Contact</a>
+         {% if logged_in %}
+         <a href="/sign-out" class="block text-indigo-400 bg-indigo-700 px-3 py-2 rounded-md text-base font-medium transition-colors">Sign Out</a>
+        <a href="/dashboard" class="block text-gray-900 bg-gray-100 px-3 py-2 rounded-md text-base font-medium transition-colors">Dashboard</a>
+         {%else%}
         <a href="/login" class="block text-indigo-400 bg-indigo-700 px-3 py-2 rounded-md text-base font-medium transition-colors">Login</a>
         <a href="/register" class="block text-gray-900 bg-gray-100 px-3 py-2 rounded-md text-base font-medium transition-colors">Register</a>
+        {%endif%}
     </div>
 
     <script>
