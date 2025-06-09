@@ -1,0 +1,62 @@
+name: Python CI
+
+on:
+  push:
+    paths:
+      - '**.py'
+      - 'pyproject.toml'
+      - 'docker-compose.yml'
+      - '.github/workflows/ruff-format.yml'
+  pull_request:
+    paths:
+      - '**.py'
+      - 'pyproject.toml'
+      - 'docker-compose.yml'
+
+jobs:
+  setup:
+    name: Setup Environment
+    runs-on: debian-bare
+
+    outputs:
+      python-version: ${{ steps.set-python-version.outputs.version }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        id: set-python-version
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+
+  check:
+    name: Format & Build Check
+    runs-on: debian-bare
+    needs: setup
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+
+      - name: Run Ruff formatter
+        run: ruff format --check .
+
+      - name: Test Docker Compose Build
+        run: docker-compose build
