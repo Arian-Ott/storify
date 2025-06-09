@@ -21,6 +21,6 @@ COPY api ./api
 COPY frontend ./frontend
 
 
-EXPOSE 8000
+EXPOSE 9654
 
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--workers", "1"]
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "9654", "--reload", "--workers", "1"]
