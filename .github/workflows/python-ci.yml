@@ -6,7 +6,7 @@ on:
       - '**.py'
       - 'pyproject.toml'
       - 'docker-compose.yml'
-      - '.github/workflows/ruff-format.yml'
+      - '.github/workflows/python-ci.yml'
   pull_request:
     paths:
       - '**.py'
@@ -16,7 +16,7 @@ on:
 jobs:
   setup:
     name: Setup Environment
-    runs-on: debian-bare
+    runs-on: self-hosted
 
     outputs:
       python-version: ${{ steps.set-python-version.outputs.version }}
@@ -24,16 +24,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Set up Python
-        id: set-python-version
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        run: |
+          echo "Setting up Python environment"
+          apt install python3.13-venv -y
+          python3 -m venv .venv
+          source .venv/bin/activate
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          source .venv/bin/activate
+          python3 -m pip install --upgrade pip
           pip install .[dev]
 
   check:
@@ -60,3 +61,9 @@ jobs:
 
       - name: Test Docker Compose Build
         run: docker-compose build
+      - name: Cleanup Docker
+        run: docker system prune -f
+      - name: cleanup python
+        run: |
+          deactivate
+          rm -rf .venv
