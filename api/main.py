@@ -32,6 +32,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 if __name__ == "__main__":
     import uvicorn
 

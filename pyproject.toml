@@ -57,6 +57,6 @@ Issues = "https://github.com/arian-ott/storify/issues"
 [tool.setuptools]
 include-package-data = true
 
-
 [tool.pytest.ini_options]
 addopts = "-n auto -v"
+
