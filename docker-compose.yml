@@ -3,7 +3,7 @@ services:
     build: .
     env_file: .env
     ports:
-      - "9654:8000"
+      - "9654:9654"
     
 
 
