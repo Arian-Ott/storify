@@ -16,7 +16,7 @@ on:
 jobs:
   setup:
     name: Setup Environment
-    runs-on: debian-bare
+    runs-on: self-hosted
 
     outputs:
       python-version: ${{ steps.set-python-version.outputs.version }}
