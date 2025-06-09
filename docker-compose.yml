@@ -4,6 +4,12 @@ services:
     env_file: .env
     ports:
       - "9654:9654"
+    volumes:
+     - ./s4:/app/s4
+    restart: unless-stopped
+
+volumes:
+  s4:
     
 
 
