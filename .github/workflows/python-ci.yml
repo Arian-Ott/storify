@@ -34,7 +34,7 @@ jobs:
       - name: Install dependencies
         run: |
           echo "Installing dependencies"
-          python -m venv .venv
+          python3 -m venv .venv
           source .venv/bin/activate
           python3 -m pip install --upgrade pip
           pip install .[dev]
@@ -54,7 +54,7 @@ jobs:
       - name: Run Ruff formatter
         run: |
           echo "Running Ruff formatter"
-          python -m venv .venv
+          python3 -m venv .venv
           source .venv/bin/activate
           ruff format --check .
 
