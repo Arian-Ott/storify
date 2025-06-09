@@ -4,7 +4,7 @@
     <!-- Essential Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Site - Fast, Modern, and Accessible{% endblock %}</title>
+    <title>{% block title %}Storify{% endblock %}</title>
     <meta name="description" content="{% block description %}Welcome to MySite, a fast and responsive web app powered by Tailwind and Jinja2.{% endblock %}">
     <meta name="keywords" content="MySite, Tailwind CSS, Jinja2, Responsive Design, Dark Mode, SEO">
     <meta name="author" content="Arian Ott">
@@ -46,11 +46,16 @@
 
     <footer class="bg-gray-800 text-neutral-400 text-sm py-6 mt-12 border-t border-gray-700" role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p>&copy; <span id="current_year"></span> <span itemprop="copyrightHolder">MySite</span>. All rights reserved.</p>
+            <p>&copy; <span id="current_year"></span> <span itemprop="copyrightHolder">Storify</span>. All rights reserved.</p>
             <nav aria-label="Footer Navigation" class="space-x-4">
                 <a href="/privacy" class="hover:text-blue-400 transition-colors" rel="nofollow">Privacy</a>
-                <a href="/terms" class="hover:text-blue-400 transition-colors" rel="nofollow">Terms</a>
-                <a href="/contact" class="hover:text-blue-400 transition-colors">Contact</a>
+                <a href="/imprint" class="hover:text-blue-400 transition-colors" rel="nofollow">Imprint</a>
+       <div class="inline-block align-middle">
+  <a href="https://github.com/Arian-Ott/storify" target="_blank" rel="noopener noreferrer">
+    <img src="/static/GitHub_Invertocat_Light.svg" alt="GitHub" class="w-5 h-5" />
+  </a>
+</div>
+
             </nav>
         </div>
     </footer>
