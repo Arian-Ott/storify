@@ -8,9 +8,6 @@ services:
      - ./s4:/app/s4
     restart: unless-stopped
 
-volumes:
-  s4:
-    
 
 
     

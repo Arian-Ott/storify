@@ -7,5 +7,6 @@ tests
 *.egg-info
 .ruff_cache
 docs
+s4
 
 .gitignore

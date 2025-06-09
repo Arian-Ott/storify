@@ -35,9 +35,9 @@ def create_tables():
 
 
 def create_storage_path():
-    if not os.path.exists("storage"):
+    if not os.path.exists("s4"):
         try:
-            os.makedirs("storage")
+            os.makedirs("s4")
             logger.info("Storage directory created successfully.")
         except Exception as e:
             logger.error(f"Failed to create storage directory: {e}")
