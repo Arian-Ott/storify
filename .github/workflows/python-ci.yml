@@ -56,7 +56,8 @@ jobs:
           echo "Running Ruff formatter"
           python3 -m venv .venv
           source .venv/bin/activate
-          ruff format --check .
+          pip install .[dev]
+          ruff format .
 
       - name: Test Docker Compose Build
         run: docker compose build
