@@ -12,7 +12,13 @@ from fastapi.middleware.gzip import GZipMiddleware
 load_dotenv()
 import os
 
-app = FastAPI()
+if os.getenv("DEBUG") != "True":
+    openapi_url = None 
+    redoc_url = None
+    docs_url = None
+    app = FastAPI(openapi_url=openapi_url, redoc_url=redoc_url, docs_url=docs_url, debug=False)
+else:
+    app = FastAPI()
 app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
 app.mount("/static", StaticFiles(directory="frontend/static/"), name="static")
 app.add_event_handler("startup", startup)
@@ -26,9 +32,9 @@ app.include_router(html_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Adjust this to your needs
+    allow_origins=["*"], 
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET, POST, DELETE"],
     allow_headers=["*"],
 )
 

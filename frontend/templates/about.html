@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}About - Storify{% endblock %}
+
+{% block content %}
+<!-- About Section -->
+<section class="bg-slate-800 py-20">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <h2 class="text-4xl font-bold mb-6 text-indigo-400">About Storify</h2>
+    <p class="text-lg mb-4 text-white-700">
+      <strong>Storify</strong> is a lightweight file storage server built with <em>FastAPI</em>, designed to let users upload and share files with ease. It offers efficient, self-hosted static file hosting while ensuring secure access and minimal duplication.
+    </p>
+    <p class="text-lg mb-4 text-white-700">
+      When a file is uploaded, Storify calculates its hash and checks whether it already exists on the server. If a match is found, instead of storing the file again, a symbolic link (symlink) is created—ensuring only one copy is retained, saving valuable storage space.
+    </p>
+    <p class="text-lg mb-4 text-white-700">
+      The platform supports user authentication and authorisation via JSON Web Tokens (JWT), enabling access control to protected resources like profile pictures or user-specific data.
+    </p>
+
+    <h3 class="text-2xl font-semibold mt-10 mb-4 text-indigo-400" id="features">Key Features</h3>
+    <ul class="list-disc list-inside text-white-700 text-lg space-y-2">
+      <li>Fast and simple hosting of static files</li>
+      <li>User authentication for secure file management</li>
+      <li>Smart deduplication using file hashing</li>
+      <li>Protected resources requiring valid JWT access</li>
+    </ul>
+
+    <h3 class="text-2xl font-semibold mt-10 mb-4 text-indigo-400">Project Status</h3>
+    <p class="text-lg mb-2 text-white-700">
+      Storify is currently in <strong>development preview</strong> and is considered <strong>unstable</strong>. The current version is <code>v0.1.0-dev</code>.
+    </p>
+    <p class="text-lg mb-2 text-white-700">
+      This is a <strong>demo site only</strong>. The project has not yet been officially released, and there is <strong>no guarantee</strong> of stability or continued availability.
+    </p>
+    <p class="text-lg mb-2 text-white-700">
+      Storify is <strong>open source</strong>. You can find the code and contribute on 
+      <a href="https://github.com/yourusername/storify" class="text-blue-400 underline hover:text-blue-300" target="_blank">GitHub</a>.
+    </p>
+
+    <p class="mt-8 text-lg text-white-600">
+      Whether you're hosting personal assets, sharing documents, or managing user content, Storify provides a streamlined and secure solution.
+    </p>
+  </div>
+</section>
+{% endblock %}

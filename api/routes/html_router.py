@@ -9,7 +9,8 @@ from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi import HTTPException
 from api.utils.jwt import protected_route
 from api.services.s4_service import get_symlinks_by_user
-
+import os
+import requests
 html_router = APIRouter(tags=["html"])
 templates = Jinja2Templates(directory="frontend/templates", auto_reload=True)
 
@@ -106,3 +107,42 @@ async def route_assets(request: Request):
         verify_token(request.cookies.get("access_token")).get("sub")
     )
     return html_resp(request, "dashboard/assets.html", {"files": files})
+
+@html_router.get("/privacy", response_class=HTMLResponse)
+async def route_privacy(request: Request):
+    """
+    Render the Privacy Policy page.
+    """
+    PRIVACY_URL = os.getenv("PRIVACY_POLICY_URL", "https://example.com/privacy")
+    policy_text = requests.get(PRIVACY_URL).text
+    if not policy_text:
+        raise HTTPException(status_code=404, detail="Privacy Policy not found")
+    
+    return HTMLResponse(
+        content=policy_text,
+        media_type="text/html",
+        
+
+    )
+
+@html_router.get("/imprint", response_class=HTMLResponse)
+async def route_imprint(request: Request):
+    """
+    Render the Imprint page.
+    """
+    IMPRINT_URL = os.getenv("IMPRINT_URL", "https://example.com/imprint")
+    imprint_text = requests.get(IMPRINT_URL).text
+    if not imprint_text:
+        raise HTTPException(status_code=404, detail="Imprint not found")
+    
+    return HTMLResponse(
+        content=imprint_text,
+        media_type="text/html",
+    )
+
+@html_router.get("/about", response_class=HTMLResponse)
+async def route_about(request: Request):
+    """
+    Render the About page.
+    """
+    return html_resp(request, "about.html")
