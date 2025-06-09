@@ -56,7 +56,6 @@ Issues = "https://github.com/arian-ott/storify/issues"
 
 [tool.setuptools]
 include-package-data = true
-[tool.setuptools]
 packages = { find = { include = ["api*", "frontend*"] } }
 
 
