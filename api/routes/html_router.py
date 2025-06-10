@@ -9,9 +9,11 @@ from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi import HTTPException
 from api.utils.jwt import protected_route
 from api.services.s4_service import get_symlinks_by_user
+from api.services.user_service import get_user
 import os
 import requests
 from api.utils.github_stats import format_releases
+from uuid import UUID
 
 html_router = APIRouter(tags=["html"])
 templates = Jinja2Templates(directory="frontend/templates", auto_reload=True)
@@ -38,6 +40,12 @@ async def route_index(request: Request):
     """
     Render the index page.
     """
+    success_message = request.headers.get("x-success-message")
+    
+    
+  
+    if success_message:
+        return html_resp(request, "index.html", {"success_messages": success_message})
     return html_resp(request, "index.html")
 
 
@@ -70,7 +78,11 @@ async def route_sign_out(request: Request):
         response = RedirectResponse(
             url="/",
             status_code=303,
+            headers={
+                "x-success-message": "You have been signed out successfully."
+            },
         )
+        
         response.delete_cookie("access_token")
         return response
     except Exception as e:
@@ -97,6 +109,12 @@ async def route_storify(request: Request):
     """
     Render the Storify page.
     """
+    if request.cookies.get("access_token"):
+        user = verify_token(request.cookies.get("access_token"))
+        user = user["sub"]
+        user = get_user(user_id=UUID(user))
+
+        return html_resp(request, "dashboard/storify.html", {"username": user.username})
     return html_resp(request, "dashboard/storify.html")
 
 
@@ -109,6 +127,16 @@ async def route_assets(request: Request):
     files = get_symlinks_by_user(
         verify_token(request.cookies.get("access_token")).get("sub")
     )
+    if request.cookies.get("access_token"):
+        user = verify_token(request.cookies.get("access_token"))
+        user = user["sub"]
+        user = get_user(user_id=UUID(user))
+
+        return html_resp(
+            request,
+            "dashboard/assets.html",
+            {"username": user.username, "files": files},
+        )
     return html_resp(request, "dashboard/assets.html", {"files": files})
 
 
@@ -151,6 +179,35 @@ async def route_about(request: Request):
     """
     releases = format_releases()
     version = releases[len(releases) - 1]["version"]
+    if request.cookies.get("access_token"):
+        user = verify_token(request.cookies.get("access_token"))
+        user = user["sub"]
+        user = get_user(user_id=UUID(user))
+
+        return html_resp(
+            request,
+            "about.html",
+            {"release_log": releases, "version": version, "username": user.username},
+        )
     return html_resp(
         request, "about.html", {"release_log": releases, "version": version}
+    )
+
+
+@html_router.get("/profile", response_class=HTMLResponse)
+@protected_route
+async def route_profile(request: Request):
+    """
+    Render the user profile page.
+    """
+    user = verify_token(request.cookies.get("access_token"))
+    user = user["sub"]
+    user = get_user(user_id=UUID(user))
+    if not user:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+    return html_resp(
+        request,
+        "settings/profile.html",
+        {"current_user": user, "username": user.username},
     )
