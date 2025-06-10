@@ -27,7 +27,7 @@
 
     <h3 class="text-2xl font-semibold mt-10 mb-4 text-indigo-400">Project Status</h3>
     <p class="text-lg mb-2 text-white-700">
-      Storify is currently in <strong>development preview</strong> and is considered <strong>unstable</strong>. The current version is <code>v0.1.0-dev</code>.
+      Storify is currently in <strong>development preview</strong> and is considered <strong>unstable</strong>. The current version is <code>{{version}}</code>.
     </p>
     <p class="text-lg mb-2 text-white-700">
       This is a <strong>demo site only</strong>. The project has not yet been officially released, and there is <strong>no guarantee</strong> of stability or continued availability.
@@ -41,5 +41,29 @@
       Whether you're hosting personal assets, sharing documents, or managing user content, Storify provides a streamlined and secure solution.
     </p>
   </div>
+ 
+  <div class="container mx-auto px-4 max-w-4xl mt-10">
+    <h2 class="text-3xl font-semibold mb-4 text-indigo-400">Release Log</h3>
+
+       {%for release in release_log%}
+       <div class="bg-slate-700 p-6 rounded-lg mb-6">
+        <h3 class="text-2xl font-semibold text-indigo-400">{{ release.version }}</h3>
+       
+
+        <p class="text-white-800 mb-2">Released on: {{ release.date }}</p>
+        <p class="text-white-800 mb-2">Authour: {{ release.author }}</p>
+        <p class="text-white-800 mb-2">Release Title: {{ release.title }}</p>
+        <hr>
+        <p class="text-2xl mb-4 text-white-700">
+          <strong>Release Notes:</strong>
+          </p>
+     
+          <div class="content text-white-700">
+          
+          {{ release.description|safe }}
+          </div>
+      
+        {% endfor %}
+
 </section>
 {% endblock %}

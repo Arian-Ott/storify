@@ -107,7 +107,14 @@ async def route_login_user(
             status_code=303,
         )
 
-        response.set_cookie("access_token", token, httponly=True, secure=True, samesite="Lax", max_age=30* 60 )  
+        response.set_cookie(
+            "access_token",
+            token,
+            httponly=True,
+            secure=True,
+            samesite="Lax",
+            max_age=30 * 60,
+        )
 
         return response
     except ValueError as e:

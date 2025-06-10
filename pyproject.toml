@@ -33,7 +33,8 @@ dependencies = [
     "pymysql",
     "python-dotenv",
     "requests",
-    "jinja2"
+    "jinja2",
+    "markdown",
 ]
 
 [project.optional-dependencies]
