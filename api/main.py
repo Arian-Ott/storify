@@ -13,10 +13,12 @@ load_dotenv()
 import os
 
 if os.getenv("DEBUG") != "True":
-    openapi_url = None 
+    openapi_url = None
     redoc_url = None
     docs_url = None
-    app = FastAPI(openapi_url=openapi_url, redoc_url=redoc_url, docs_url=docs_url, debug=False)
+    app = FastAPI(
+        openapi_url=openapi_url, redoc_url=redoc_url, docs_url=docs_url, debug=False
+    )
 else:
     app = FastAPI()
 app.add_middleware(GZipMiddleware, minimum_size=1000, compresslevel=5)
@@ -32,7 +34,7 @@ app.include_router(html_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["GET, POST, DELETE"],
     allow_headers=["*"],
