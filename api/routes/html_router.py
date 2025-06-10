@@ -11,6 +11,8 @@ from api.utils.jwt import protected_route
 from api.services.s4_service import get_symlinks_by_user
 import os
 import requests
+from api.utils.github_stats import format_releases
+
 html_router = APIRouter(tags=["html"])
 templates = Jinja2Templates(directory="frontend/templates", auto_reload=True)
 
@@ -109,6 +111,7 @@ async def route_assets(request: Request):
     )
     return html_resp(request, "dashboard/assets.html", {"files": files})
 
+
 @html_router.get("/privacy", response_class=HTMLResponse)
 async def route_privacy(request: Request):
     """
@@ -118,13 +121,12 @@ async def route_privacy(request: Request):
     policy_text = requests.get(PRIVACY_URL).text
     if not policy_text:
         raise HTTPException(status_code=404, detail="Privacy Policy not found")
-    
+
     return HTMLResponse(
         content=policy_text,
         media_type="text/html",
-        
-
     )
+
 
 @html_router.get("/imprint", response_class=HTMLResponse)
 async def route_imprint(request: Request):
@@ -135,15 +137,20 @@ async def route_imprint(request: Request):
     imprint_text = requests.get(IMPRINT_URL).text
     if not imprint_text:
         raise HTTPException(status_code=404, detail="Imprint not found")
-    
+
     return HTMLResponse(
         content=imprint_text,
         media_type="text/html",
     )
+
 
 @html_router.get("/about", response_class=HTMLResponse)
 async def route_about(request: Request):
     """
     Render the About page.
     """
-    return html_resp(request, "about.html")
+    releases = format_releases()
+    version = releases[len(releases) - 1]["version"]
+    return html_resp(
+        request, "about.html", {"release_log": releases, "version": version}
+    )
