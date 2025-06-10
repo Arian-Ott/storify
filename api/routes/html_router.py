@@ -21,8 +21,9 @@ def html_resp(request, html_file, data: dict = {}):
     try:
         verify_token(access_token)
         logged_in = True
-    except Exception as e:
+    except:
         logged_in = False
+        request.cookies.pop("access_token", None)
 
     return templates.TemplateResponse(
         html_file, {"request": request, "logged_in": logged_in, **data}
