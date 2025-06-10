@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}User Profile - Storify{% endblock %}
+{% block description %}Manage your Storify account, change password, or delete your data.{% endblock %}
+{% block og_title %}User Profile - Storify{% endblock %}
+{% block og_description %}Manage your Storify account, change password, or delete your data.{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+    <h1 class="text-4xl font-extrabold text-blue-400 mb-8 text-center" data-aos="fade-down">Your Profile</h1>
+
+    {% if message %}
+    <div class="bg-green-600 text-neutral-100 p-4 rounded-lg shadow-md mb-6" data-aos="fade-up">
+        {{ message }}
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="bg-red-600 text-neutral-100 p-4 rounded-lg shadow-md mb-6" data-aos="fade-up">
+        {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="bg-gray-800 rounded-lg shadow-xl p-6 md:p-8 mb-10" data-aos="fade-up" data-aos-delay="100">
+        <h2 class="text-2xl font-bold text-neutral-100 mb-6">Account Information</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-neutral-300">
+            <p><strong>Username:</strong> <span class="text-blue-300">{{ current_user.username }}</span></p>
+            <p><strong>Account Created:</strong> {{ current_user.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>Last Password Change:</strong> {{ current_user.last_password_change.strftime('%Y-%m-%d %H:%M') }}</p>
+            <p><strong>Account Status:</strong> <span class="{% if current_user.is_active %}text-green-400{% else %}text-red-400{% endif %}">{% if current_user.is_active %}Active{% else %}Inactive{% endif %}</span></p>
+            <p> <strong>Storify ID:</strong> <span class="text-blue-300">{{ current_user.id }}</span></p>
+        </div>
+    </div>
+
+    <div class="bg-gray-800 rounded-lg shadow-xl p-6 md:p-8 mb-10" data-aos="fade-up" data-aos-delay="200">
+        <h2 class="text-2xl font-bold text-neutral-100 mb-6">Change Password</h2>
+        <form action="/user/change_password" method="POST" class="space-y-4">
+            <div>
+                <label for="current_password" class="block text-neutral-300 text-sm font-bold mb-2">Current Password:</label>
+                <input type="password" id="current_password" name="current_password"
+                       class="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-neutral-100 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                       required>
+            </div>
+            <div>
+                <label for="new_password" class="block text-neutral-300 text-sm font-bold mb-2">New Password:</label>
+                <input type="password" id="new_password" name="new_password"
+                       class="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-neutral-100 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                       required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
+                       title="Password must be at least 8 characters long, contain at least one letter, one number, and one special character.">
+                <p class="text-neutral-400 text-xs mt-1">Min 8 characters, 1 letter, 1 number, 1 special character.</p>
+            </div>
+            <div>
+                <label for="confirm_new_password" class="block text-neutral-300 text-sm font-bold mb-2">Confirm New Password:</label>
+                <input type="password" id="confirm_new_password" name="confirm_new_password"
+                       class="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-neutral-100 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-500"
+                       required>
+            </div>
+            <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200">
+                Change Password
+            </button>
+        </form>
+    </div>
+
+    <div class="bg-gray-800 rounded-lg shadow-xl p-6 md:p-8 mb-10" data-aos="fade-up" data-aos-delay="300">
+        <h2 class="text-2xl font-bold text-neutral-100 mb-6">Data Management</h2>
+
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold text-neutral-100 mb-4">Delete All Assets</h3>
+            <p class="text-neutral-300 mb-4">This action will permanently delete all stories, images, and any other assets associated with your account. Your account itself will remain active.</p>
+            <button onclick="document.getElementById('delete-assets-modal').classList.remove('hidden')"
+                    class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200">
+                Delete All My Assets
+            </button>
+        </div>
+
+        <div>
+            <h3 class="text-xl font-semibold text-neutral-100 mb-4">Delete Account</h3>
+            <p class="text-neutral-300 mb-4">This action is irreversible and will permanently delete your account and all associated data, including all your assets. Proceed with caution.</p>
+            <button onclick="document.getElementById('delete-account-modal').classList.remove('hidden')"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200">
+                Delete My Account
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="delete-assets-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center hidden z-50">
+    <div class="bg-gray-800 rounded-lg shadow-xl p-8 max-w-lg w-full text-center" data-aos="zoom-in">
+        <h3 class="text-2xl font-bold text-red-400 mb-4">Confirm Deletion of All Assets</h3>
+        <p class="text-neutral-300 mb-6">Are you absolutely sure you want to delete ALL your assets? This action cannot be undone. Please type "DELETE ALL ASSETS" to confirm.</p>
+        <form action="/user/delete_assets" method="POST">
+            <input type="text" id="confirm_delete_assets" name="confirmation_text"
+                   class="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-neutral-100 leading-tight focus:outline-none focus:shadow-outline focus:border-orange-500 mb-4"
+                   placeholder="Type 'DELETE ALL ASSETS' to confirm" required>
+            <div class="flex justify-center space-x-4">
+                <button type="button" onclick="document.getElementById('delete-assets-modal').classList.add('hidden')"
+                        class="bg-neutral-600 hover:bg-neutral-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">
+                    Cancel
+                </button>
+                <button type="submit"
+                        class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200"
+                        onclick="if(document.getElementById('confirm_delete_assets').value !== 'DELETE ALL ASSETS') { alert('Please type "DELETE ALL ASSETS" to confirm.'); return false; }">
+                    Yes, Delete All Assets
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="delete-account-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center hidden z-50">
+    <div class="bg-gray-800 rounded-lg shadow-xl p-8 max-w-lg w-full text-center" data-aos="zoom-in">
+        <h3 class="text-2xl font-bold text-red-400 mb-4">Confirm Account Deletion</h3>
+        <p class="text-neutral-300 mb-6">Are you absolutely sure you want to permanently delete your account and all associated data? This action cannot be undone. Please type "DELETE MY ACCOUNT" to confirm.</p>
+        <form action="/user/delete" method="POST">
+            <input type="text" id="confirm_delete_account" name="confirmation_text"
+                   class="shadow appearance-none border border-gray-700 rounded w-full py-2 px-3 bg-gray-900 text-neutral-100 leading-tight focus:outline-none focus:shadow-outline focus:border-red-500 mb-4"
+                   placeholder="Type 'DELETE MY ACCOUNT' to confirm" required>
+            <div class="flex justify-center space-x-4">
+                <button type="button" onclick="document.getElementById('delete-account-modal').classList.add('hidden')"
+                        class="bg-neutral-600 hover:bg-neutral-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200">
+                    Cancel
+                </button>
+                <button type="submit"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200"
+                        onclick="if(document.getElementById('confirm_delete_account').value !== 'DELETE MY ACCOUNT') { alert('Please type "DELETE MY ACCOUNT" to confirm.'); return false; }">
+                    Yes, Delete My Account
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

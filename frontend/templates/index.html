@@ -1,23 +1,96 @@
 {% extends "base.html" %}
 
-{% block title %}Home - Storify{% endblock %}
+{% block title %}Storify - Your Self-Hosted Static File Server{% endblock %}
+{% block description %}Storify is a self-hosted static file server for easy, secure, and simple management and sharing of your digital content.{% endblock %}
+{% block og_title %}Storify - Easy File Hosting & Sharing{% endblock %}
+{% block og_description %}Storify is a self-hosted static file server for easy, secure, and simple management and sharing of your digital content.{% endblock %}
+{% block og_image %}/static/img/social-preview-home.png{% endblock %} {# Consider a specific image for the home page #}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="bg-slate-800 py-28 shadow-lg relative overflow-hidden">
-  <div class="container mx-auto px-4 text-center max-w-3xl">
-    <h1 class="text-5xl font-extrabold mb-6 leading-tight text-white">
-      Welcome to Storify
-    </h1>
-    <p class="text-lg mb-6 italic text-neutral-300">
-      Turn your content into something more.
-    </p>
-    <p class="text-xl mb-10 text-neutral-400">
-      Storify is a self-hosted static file server that makes it easy to manage and share your digital content—securely and simply.
-    </p>
-    <a href="#features" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-8 rounded-xl transition duration-200 shadow-lg hover:shadow-xl">
-      Explore Features
-    </a>
-  </div>
+<section class="bg-gradient-to-br from-slate-900 to-gray-900 py-24 md:py-36 lg:py-48 shadow-lg relative overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-10">
+        <svg class="w-full h-full" fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="pattern-zigzag" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M0 5L5 0L10 5L5 10L0 5Z" stroke="#475569" stroke-width="0.5" fill="none"/>
+            </pattern>
+            <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-zigzag)" />
+        </svg>
+    </div>
+    <div class="absolute inset-0 z-0 bg-contain bg-center opacity-5" style="background-image: url('/static/img/abstract-bg-shape.svg');"></div>
+    {# You would need to create a simple SVG like a few overlapping geometric shapes for abstract-bg-shape.svg #}
+
+
+    <div class="container mx-auto px-4 text-center max-w-4xl relative z-10" data-aos="fade-down" data-aos-delay="100">
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-5 leading-tight text-white drop-shadow-lg">
+            <span class="text-blue-400">Storify:</span> <br class="md:hidden"> Host & Share Files, Simplified.
+        </h1>
+        <p class="text-lg md:text-xl mb-6 italic text-neutral-300">
+            Secure, easy-to-use, and entirely under your control.
+        </p>
+        <p class="text-xl md:text-2xl mb-12 text-neutral-400 max-w-2xl mx-auto">
+            Storify is your self-hosted static file server, empowering you to manage and share your digital content
+            with unparalleled simplicity and robust security.
+        </p>
+
+        <div class="flex flex-col sm:flex-row justify-center gap-4" data-aos="zoom-in" data-aos-delay="300">
+            <a href="/register" class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base md:text-lg font-semibold rounded-full shadow-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 transition-all duration-300 transform hover:scale-105">
+                <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                Get Started for Free
+            </a>
+            <a href="/about" class="inline-flex items-center justify-center px-8 py-4 border border-gray-600 text-base md:text-lg font-semibold rounded-full text-neutral-200 bg-transparent hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-500 focus:ring-offset-slate-900 transition-all duration-300 transform hover:scale-105">
+                <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5L6 11H5a1 1 0 00-1 1v2a1 1 0 001 1h1.172l.117.117A1 1 0 007 15.586V16a1 1 0 001 1h4a1 1 0 001-1v-.414a1 1 0 00.293-.707l.117-.117H15a1 1 0 001-1v-2a1 1 0 00-1-1h-1l-2.133-3.5A1 1 0 0010 7z" clip-rule="evenodd"></path></svg>
+                Learn More
+            </a>
+        </div>
+    </div>
 </section>
+
+<section id="features" class="py-20 md:py-28 bg-slate-900">
+    <div class="container mx-auto px-4 max-w-5xl">
+        <h2 class="text-4xl font-extrabold text-white text-center mb-12" data-aos="fade-up">Why Choose Storify?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 text-center" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-blue-400 mb-4">
+                    <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v3h8z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">Secure & Private</h3>
+                <p class="text-neutral-300">Keep your files safe with encrypted storage and access controls. Your data, your rules.</p>
+            </div>
+            <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 text-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-green-400 mb-4">
+                    <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6.5H18a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2v-1l.09-.91A6.749 6.749 0 017 16zm.75-2.75a.75.75 0 100-1.5.75.75 0 000 1.5z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">Effortless Uploads</h3>
+                <p class="text-neutral-300">Intuitive interface for quick drag-and-drop uploads and instant shareable links.</p>
+            </div>
+            <div class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 text-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-purple-400 mb-4">
+                    <svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-3">Full Control</h3>
+                <p class="text-neutral-300">Manage your content, update settings, and have complete ownership over your data.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 md:py-24 bg-gray-900 text-center">
+    <div class="container mx-auto px-4 max-w-3xl" data-aos="fade-up">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">Ready to Storify Your Content?</h2>
+        <p class="text-lg md:text-xl text-neutral-300 mb-10">
+            Join thousands of users who trust Storify for their self-hosted file management needs.
+        </p>
+        <a href="/register" class="inline-flex items-center justify-center px-10 py-4 border border-transparent text-lg font-semibold rounded-full shadow-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-900 transition-all duration-300 transform hover:scale-105">
+            <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+            Sign Up Now
+        </a>
+    </div>
+</section>
+
 {% endblock %}
