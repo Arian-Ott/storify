@@ -18,10 +18,7 @@ def protected_route(func):
             token = request.cookies.get("access_token")
         logger.debug(f"Token from cookies: {token}")
         if not token:
-            return JSONResponse(
-                status_code=401,
-                content={"detail": "Unauthorized: missing token"},
-            )
+            return RedirectResponse(url="/")
 
         user = dict(verify_token(token))  # verify_token should raise if invalid
         exp = user.get("exp")
