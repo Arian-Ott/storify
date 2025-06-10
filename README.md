@@ -1,6 +1,7 @@
 
 # Storify
 
+[![Python CI](https://github.com/Arian-Ott/storify/actions/workflows/python-ci.yml/badge.svg?branch=main)](https://github.com/Arian-Ott/storify/actions/workflows/python-ci.yml)
 ## About
 
 **Storify** is a file storage server built with **FastAPI**, allowing users to upload and share files over the web. It ensures efficient storage by avoiding duplication—each file is stored only once. When a user uploads a file, Storify calculates its hash and checks for existing matches. If a match is found, a symbolic link (symlink) is created for the user instead of storing a duplicate.
