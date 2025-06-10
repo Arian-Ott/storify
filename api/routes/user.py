@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from api.schemas.user_schemas import UserCreate, UserMultipartCreate
-from api.services.user_service import create_user, delete_user, get_user
+from api.services.user_service import create_user, delete_user, get_user, change_password
 from api.utils.jwt import create_access_token
 from api.utils.security import verify_password
 from fastapi import HTTPException
@@ -14,6 +14,37 @@ from api.utils.jwt import visitors
 
 user_router = APIRouter(prefix="/auth", tags=["users"])
 
+@user_router.post("/users/change_password/multipart/")
+@protected_route
+async def route_change_password_multipart(
+    request: Request,
+    current_password: str = Form(..., min_length=8),
+    new_password: str = Form(..., min_length=8),
+    confirm_new_password: str = Form(..., min_length=8),
+):
+    """
+    Change the password of the authenticated user using multipart form data.
+    """
+    if new_password != confirm_new_password:
+        raise HTTPException(status_code=400, detail="New passwords do not match")
+    if not current_password or not new_password:
+        raise HTTPException(status_code=400, detail="Old and new passwords are required")
+    try:
+        change_password(
+            request.state.user["sub"],
+         
+            new_password,
+        )
+        resp = RedirectResponse(
+            url="/dashboard",
+            status_code=303,
+            headers={"X-Success-Message": "Password changed successfully"},
+        )
+        resp.delete_cookie("access_token")
+        return resp
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
 
 @user_router.post("/users/", status_code=201)
 async def route_create_user(user: UserCreate):

@@ -79,7 +79,72 @@
         </div>
     </div>
 </section>
+<div id="welcome-popup" class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75 hidden">
+    <div class="bg-gray-800 rounded-xl shadow-2xl p-8 max-w-lg w-11/12 md:w-3/4 lg:w-1/2 text-center relative" data-aos="zoom-in" data-aos-duration="600">
+        <!-- Close button -->
+        <button id="close-popup-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors duration-200">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
 
+        <h3 class="text-3xl font-extrabold text-blue-400 mb-4">Welcome to Storify!</h3>
+        <p class="text-lg text-neutral-300 mb-6">
+            Thank you for visiting our demo site. Storify is a self-hosted static file server, currently in development preview.
+        </p>
+        <p class="text-base text-neutral-400 mb-8">
+            While you can explore its features, please note it is unstable and not yet officially released.
+            We appreciate your understanding and feedback!
+        </p>
+
+        <div class="flex justify-center space-x-4">
+            <a href="/register" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-semibold rounded-full shadow-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200">
+                Sign Up
+            </a>
+            <button id="later-popup-btn" class="inline-flex items-center justify-center px-6 py-3 border border-gray-600 text-base font-semibold rounded-full text-neutral-200 bg-transparent hover:bg-gray-700 transition-colors duration-200">
+                Maybe Later
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const popup = document.getElementById('welcome-popup');
+        const closeBtn = document.getElementById('close-popup-btn');
+        const laterBtn = document.getElementById('later-popup-btn'); // For "Maybe Later" button
+        const hasVisited = localStorage.getItem('storify_visited_home');
+
+        // Function to show the popup
+        function showPopup() {
+            popup.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when popup is open
+        }
+
+        // Function to hide the popup
+        function hidePopup() {
+            popup.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Show popup only if user hasn't visited before
+        if (!hasVisited) {
+            // Give a slight delay for AOS.init to complete and page content to render
+            setTimeout(() => {
+                showPopup();
+                localStorage.setItem('storify_visited_home', 'true'); // Set flag after showing
+            }, 500); // Adjust delay as needed
+        }
+
+        // Event listeners for closing the popup
+        closeBtn.addEventListener('click', hidePopup);
+        laterBtn.addEventListener('click', hidePopup);
+
+        // Close popup if clicking on the overlay (but not on the modal content itself)
+        popup.addEventListener('click', (event) => {
+            if (event.target === popup) {
+                hidePopup();
+            }
+        });
+    });
+</script>
 <section class="py-16 md:py-24 bg-gray-900 text-center">
     <div class="container mx-auto px-4 max-w-3xl" data-aos="fade-up">
         <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">Ready to Storify Your Content?</h2>
