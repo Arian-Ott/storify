@@ -1,41 +1,73 @@
-
 {% extends "base.html" %}
 {% block title %}Storify - Upload File{% endblock %}
+{% block description %}Upload and store your files securely with Storify's easy-to-use uploader.{% endblock %}
+{% block og_title %}Storify - Upload Your Files{% endblock %}
+{% block og_description %}Upload and store your files securely with Storify's easy-to-use uploader.{% endblock %}
 
 {% block content %}
-<form class="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-md space-y-6" method="POST" action="/s4/s4_storage/multipart" enctype="multipart/form-data">
+<div class="flex flex-col items-center justify-center min-h-full py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full p-8 bg-gray-800 rounded-2xl shadow-xl border border-gray-700" data-aos="fade-up">
 
+        <h2 class="text-3xl font-extrabold text-white text-center mb-8">Upload a New File</h2>
 
+        {% if message %}
+        <div class="bg-green-600 text-neutral-100 p-4 rounded-lg shadow-md mb-6" data-aos="fade-up">
+            {{ message }}
+        </div>
+        {% endif %}
 
-  <h2 class="text-2xl font-bold text-gray-800">Upload a File</h2>
+        {% if error %}
+        <div class="bg-red-600 text-neutral-100 p-4 rounded-lg shadow-md mb-6" data-aos="fade-up">
+            {{ error }}
+        </div>
+        {% endif %}
 
-  <div>
-    <label for="file" class="block text-sm font-medium text-gray-700 mb-2">Choose a file</label>
-    <input
-      type="file"
-      id="file"
-      name="file"
+        <form class="space-y-6" method="POST" action="/s4/s4_storage/multipart" enctype="multipart/form-data">
+            <div>
+                <label for="file" class="block text-sm font-medium text-neutral-300 mb-2">Choose your file:</label>
+                <input
+                    type="file"
+                    id="file"
+                    name="file"
+                    class="block w-full text-neutral-100 text-sm
+                           file:mr-4 file:py-2 file:px-4
+                           file:rounded-full file:border-0
+                           file:text-sm file:font-semibold
+                           file:bg-blue-500 file:text-white
+                           hover:file:bg-blue-600
+                           transition-colors duration-300
+                           bg-gray-700 border border-gray-600
+                           rounded-lg cursor-pointer
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                />
+                <p class="mt-2 text-xs text-neutral-400">Max file size: 100MB (example)</p>
+            </div>
 
-      class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-      required
-    />
-    <label for="file_name" class="block text-sm font-medium text-gray-700 mb-2">File name</label>
-    <input
-      type="text"
-      id="file_name"
-      name="file_name"
+            <div>
+                <label for="file_name" class="block text-sm font-medium text-neutral-300 mb-2">Give your file a name (optional):</label>
+                <input
+                    type="text"
+                    id="file_name"
+                    name="file_name"
+                    placeholder="e.g., My Awesome Document"
+                    class="block w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-neutral-100 placeholder-neutral-400
+                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                />
+                <p class="mt-2 text-xs text-neutral-400">If left blank, the original filename will be used.</p>
+            </div>
 
-      class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-      required
-    />
-    
-  </div>
-
-  <button
-    type="submit"
-    class="w-full bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 transition-colors duration-300"
-  >
-    Upload
-  </button>
-</form>
- {% endblock %}
+            <button
+                type="submit"
+                class="w-full flex justify-center items-center gap-2
+                       bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg
+                       hover:bg-blue-700 transition-colors duration-300
+                       shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-gray-800"
+            >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                Upload File
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

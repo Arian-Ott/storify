@@ -39,8 +39,50 @@
 <body class="bg-slate-900 text-neutral-100 flex flex-col min-h-screen" itemscope itemtype="http://schema.org/WebPage">
 
     {% include 'navbar.html' %}
+  <main class="p-6 md:p-8 lg:p-12 flex-grow pt-[4rem] md:pt-20 relative z-10" role="main">
+        {# --- Message Boxes --- #}
+        {# Success Messages #}
+        {% if success_messages %}
+            <div class="mb-6 mx-auto max-w-5xl px-4 py-3 rounded-lg bg-green-600 text-white shadow-md" role="alert" data-aos="fade-down" data-aos-once="true">
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        {% for message in success_messages %}
+                            <p class="font-medium">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
 
-    <main class="p-6 md:p-8 lg:p-12 flex-grow" role="main">
+        {# Warning Messages #}
+        {% if warning_messages %}
+            <div class="mb-6 mx-auto max-w-5xl px-4 py-3 rounded-lg bg-yellow-600 text-white shadow-md" role="alert" data-aos="fade-down" data-aos-once="true">
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <div>
+                        {% for message in warning_messages %}
+                            <p class="font-medium">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {# Info Messages #}
+        {% if info_messages %}
+            <div class="mb-6 mx-auto max-w-5xl px-4 py-3 rounded-lg bg-blue-600 text-white shadow-md" role="alert" data-aos="fade-down" data-aos-once="true">
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        {% for message in info_messages %}
+                            <p class="font-medium">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    <main class="p-6 md:p-8 lg:p-12 flex-grow " role="main">
         {% block content %}{% endblock %}
     </main>
 

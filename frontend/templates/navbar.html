@@ -1,53 +1,96 @@
-<nav class="bg-slate-900 shadow-md border-b border-gray-800">
+<nav class="bg-gray-900 shadow-lg border-b border-gray-700">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-            <!-- Brand and Left Links -->
-             
             <div class="flex items-center">
-                <a href={% if logged_in %}"/dashboard"{%else%}"/"{%endif%} class="text-xl font-bold text-indigo-400 hover:text-indigo-300 transition-colors">Storify</a>
-                <div class="hidden md:block ml-10 space-x-4">
-                    <a href={% if logged_in %}"/dashboard"{%else%}"/"{%endif%} class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Home</a>
-                    <a href="/about" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
+                <a href="{% if logged_in %}/dashboard{%else%}/{%endif%}" class="text-2xl font-extrabold text-blue-400 hover:text-blue-300 transition-colors duration-200">Storify</a>
+                <div class="hidden md:block ml-10 space-x-6">
+                    <a href="{% if logged_in %}/dashboard{%else%}/{%endif%}" class="text-neutral-300 hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Home</a>
+                    <a href="/assets" class="text-neutral-300 hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Assets</a>
+                    <a href="/storify" class="text-neutral-300 hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Upload</a>
+                    <a href="/about" class="text-neutral-300 hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">About</a>
                 </div>
             </div>
-            {% if logged_in %}    
-            <div class="hidden md:flex space-x-4">
-                <a href="/sign-out" class="bg-gray-100 text-gray-900 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors">Sign Out</a>
-                <a href="/dashboard" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-500 transition-colors">Dashboard</a>
+
+            {% if logged_in %}
+            <div class="hidden md:flex items-center space-x-4">
+                <div class="relative">
+                    <button id="user-menu-button" type="button" class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" aria-expanded="false" aria-haspopup="true">
+                        <span class="sr-only">Open user menu</span>
+                        <span class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm">{{ username[0]|upper if username else 'U' }}</span>
+                    </button>
+                    <div id="user-menu" class="z-11 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                        <div class="px-4 py-2 text-sm text-neutral-300">
+                            Signed in as <span class="font-semibold text-white">{{ username }}</span>
+                        </div>
+                        <div class="border-t border-gray-700 my-1"></div>
+                        <a href="/profile" class="block px-4 py-2 text-sm text-neutral-300 hover:bg-gray-700 transition-colors duration-200" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                        <a href="/settings" class="block px-4 py-2 text-sm text-neutral-300 hover:bg-gray-700 transition-colors duration-200" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+                        <a href="/sign-out" class="block px-4 py-2 text-sm text-red-400 hover:bg-gray-700 transition-colors duration-200" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign Out</a>
+                    </div>
+                </div>
             </div>
-            {%else%}
+            {% else %}
             <div class="hidden md:flex space-x-4">
-                <a href="/login" class="bg-gray-100 text-gray-900 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors">Login</a>
-                <a href="/register" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-500 transition-colors">Register</a>
+                <a href="/login" class="px-5 py-2 rounded-full text-sm font-semibold text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors duration-200 shadow-md">Login</a>
+                <a href="/register" class="px-5 py-2 rounded-full text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 shadow-md">Register</a>
             </div>
-            {%endif%}
-            <!-- Mobile Toggle -->
+            {% endif %}
+
             <div class="-mr-2 flex md:hidden">
-                <button id="mobile-menu-toggle" class="text-gray-300 hover:text-indigo-400 focus:outline-none transition-colors text-2xl">
-                    ☰
+                <button id="mobile-menu-toggle" type="button" class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white p-2 rounded-md transition-colors duration-200" aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
             </div>
         </div>
     </div>
 
-  <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden hidden px-2 pt-2 pb-3 space-y-1 bg-gray-900">
-        <a href={% if logged_in %}"/dashboard"{%else%}"/"{%endif%} class="block text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-base font-medium transition-colors">Home</a>
-        <a href="/about" class="block text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-base font-medium transition-colors">About</a>
-         {% if logged_in %}
-         <a href="/sign-out" class="block text-indigo-400 bg-indigo-700 px-3 py-2 rounded-md text-base font-medium transition-colors">Sign Out</a>
-        <a href="/dashboard" class="block text-gray-900 bg-gray-100 px-3 py-2 rounded-md text-base font-medium transition-colors">Dashboard</a>
-         {%else%}
-        <a href="/login" class="block text-indigo-400 bg-indigo-700 px-3 py-2 rounded-md text-base font-medium transition-colors">Login</a>
-        <a href="/register" class="block text-gray-900 bg-gray-100 px-3 py-2 rounded-md text-base font-medium transition-colors">Register</a>
-        {%endif%}
+    <div id="mobile-menu" class="md:hidden hidden px-2 pt-2 pb-3 space-y-1 bg-gray-900 border-t border-gray-700">
+        <a href="{% if logged_in %}/dashboard{%else%}/{%endif%}" class="block text-neutral-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Home</a>
+        <a href="/assets" class="block text-neutral-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Assets</a>
+        <a href="/storify" class="block text-neutral-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Upload</a>
+        <a href="/about" class="block text-neutral-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">About</a>
+        {% if logged_in %}
+        <div class="border-t border-gray-700 my-1"></div>
+        <a href="/profile" class="block text-neutral-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Your Profile</a>
+        <a href="/settings" class="block text-neutral-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Settings</a>
+        <a href="/sign-out" class="block text-red-400 hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Sign Out</a>
+        {% else %}
+        <div class="border-t border-gray-700 my-1"></div>
+        <a href="/login" class="block text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Login</a>
+        <a href="/register" class="block text-white bg-blue-600 hover:bg-blue-700 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200">Register</a>
+        {% endif %}
     </div>
 
     <script>
-        const toggleBtn = document.getElementById('mobile-menu-toggle');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
-        toggleBtn.addEventListener('click', () => {
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenu = document.getElementById('user-menu');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true' || false;
+            mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
             mobileMenu.classList.toggle('hidden');
         });
+
+        // Toggle user dropdown on click
+        if (userMenuButton) { // Ensure button exists for logged-in users
+            userMenuButton.addEventListener('click', () => {
+                const isExpanded = userMenuButton.getAttribute('aria-expanded') === 'true' || false;
+                userMenuButton.setAttribute('aria-expanded', !isExpanded);
+                userMenu.classList.toggle('hidden');
+            });
+
+            // Close user dropdown if clicking outside
+            document.addEventListener('click', (event) => {
+                if (userMenu && !userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
+                    userMenu.classList.add('hidden');
+                    userMenuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
     </script>
 </nav>
