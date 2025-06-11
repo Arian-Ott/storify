@@ -1,0 +1,18 @@
+{
+    "default": {
+        "subject": "Storify Account Verification",
+        "greeting": "Hello",
+        "body": "Thank you for creating an account with Storify. To complete your registration, please verify your email address by clicking the link below:",
+        "click_here": "Click here to verify your email address",
+        "closing": "If you did not create this account, please ignore this email.",
+        "signature": "Best regards,\nThe Storify Team"
+    },
+    "de": {
+        "subject": "Storify Konto-Verifizierung",
+        "greeting": "Hallo",
+        "body": "Vielen Dank für die Erstellung eines Kontos bei Storify. Um Ihre Registrierung abzuschließen, verifizieren Sie bitte Ihre E-Mail-Adresse, indem Sie auf den untenstehenden Link klicken:",
+        "click_here": "Hier klicken, um Ihre E-Mail-Adresse zu verifizieren",
+        "closing": "Wenn Sie dieses Konto nicht erstellt haben, ignorieren Sie bitte diese E-Mail.",
+        "signature": "Mit freundlichen Grüßen,\nDas Storify-Team"
+    }
+}

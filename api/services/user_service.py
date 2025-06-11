@@ -2,7 +2,7 @@ from api.models.user import UserModel
 from api.db import get_db
 from api.utils.security import hash_password, verify_password
 from uuid import UUID
-from api.schemas.user_schemas import UserCreate
+from api.schemas.user_schemas import UserCreate, UserEmail
 
 
 def create_user(user: UserCreate):
@@ -58,6 +58,39 @@ def change_password(user_id: str | UUID, new_password: str):
         if verify_password(new_password, user.password):
             raise ValueError("New password cannot be the same as the old password")
         user.password = hash_password(new_password)
+        db.commit()
+        db.refresh(user)
+        return user
+
+
+def add_email_to_user(user: UserEmail):
+    with next(get_db()) as db:
+        if not user.username or not user.email:
+            raise ValueError("Username and email must be provided")
+        if db.query(UserModel).filter(UserModel.email == user.email).first():
+            raise ValueError("Email already exists")
+        existing_user = (
+            db.query(UserModel).filter(UserModel.username == user.username).first()
+        )
+        if not existing_user:
+            raise ValueError("User not found")
+
+        if existing_user.email == user.email:
+            raise ValueError("Email is already associated with this user")
+        existing_user.email = user.email
+        db.commit()
+        db.refresh(existing_user)
+
+    return existing_user
+
+def verify_email(user_id: str | UUID):
+    with next(get_db()) as db:
+        if isinstance(user_id, str):
+            user_id = UUID(user_id)
+        user = db.query(UserModel).filter(UserModel.id == user_id).first()
+        if not user:
+            raise ValueError("User not found")
+        user.email_verified = True
         db.commit()
         db.refresh(user)
         return user
