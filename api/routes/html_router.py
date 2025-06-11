@@ -40,13 +40,23 @@ async def route_index(request: Request):
     """
     Render the index page.
     """
-    success_message = request.headers.get("x-success-message")
-    
-    
-  
+    success_message = request.cookies.get("success_messages")
+    error_message = request.cookies.get("error_messages")
+
+    data = {}
+
     if success_message:
-        return html_resp(request, "index.html", {"success_messages": success_message})
-    return html_resp(request, "index.html")
+        data["success_messages"] = [success_message]
+    if error_message:
+        data["warning_messages"] = [error_message]
+    try:
+        request.cookies.pop("success_messages")
+        request.cookies.pop("error_messages")
+    except KeyError:
+        # If the cookie does not exist, we simply ignore the error
+        pass
+    print(data)
+    return html_resp(request, "index.html", data)
 
 
 @html_router.get("/register", response_class=HTMLResponse)
@@ -78,11 +88,9 @@ async def route_sign_out(request: Request):
         response = RedirectResponse(
             url="/",
             status_code=303,
-            headers={
-                "x-success-message": "You have been signed out successfully."
-            },
+            headers={"x-success-message": "You have been signed out successfully."},
         )
-        
+
         response.delete_cookie("access_token")
         return response
     except Exception as e:

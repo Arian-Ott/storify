@@ -3,6 +3,7 @@ import ssl
 from email.message import EmailMessage
 import os
 
+
 class EmailSender:
     """
     A class to send emails securely using SSL/TLS.
@@ -29,11 +30,12 @@ class EmailSender:
         self.port = port
         self.sender_email = sender_email
         self.password = password
-        
-        self.context = ssl.create_default_context()
-        
 
-    def send_email(self, receiver_email: str, subject: str, body: str, html_content: str = None):
+        self.context = ssl.create_default_context()
+
+    def send_email(
+        self, receiver_email: str, subject: str, body: str, html_content: str = None
+    ):
         """
         Sends an email to a specified receiver.
 
@@ -49,45 +51,51 @@ class EmailSender:
             bool: True if the email was sent successfully, False otherwise.
         """
         msg = EmailMessage()
-        msg['From'] = self.sender_email
-        msg['To'] = receiver_email
-        msg['Subject'] = subject
+        msg["From"] = self.sender_email
+        msg["To"] = receiver_email
+        msg["Subject"] = subject
 
         # Set plain text content
         msg.set_content(body)
 
-        
         if html_content:
-            msg.add_alternative(html_content, subtype='html')
+            msg.add_alternative(html_content, subtype="html")
             print("Adding HTML content to the email.")
 
         try:
-            
-            with smtplib.SMTP_SSL(self.smtp_server, self.port, context=self.context) as server:
+            with smtplib.SMTP_SSL(self.smtp_server, self.port) as server:
                 print(f"Attempting to log in as {self.sender_email}...")
-                
+
                 server.login(self.sender_email, self.password)
                 print("Login successful.")
 
-                
                 server.send_message(msg)
                 print(f"Email sent successfully to {receiver_email}!")
             return True
         except smtplib.SMTPAuthenticationError as e:
-            print(f"SMTP Authentication Error: Could not log in. Check your email and password. Details: {e}")
-            print("Ensure that 'Less secure app access' or 'App passwords' are enabled for your email provider if you are using services like Gmail.")
+            print(
+                f"SMTP Authentication Error: Could not log in. Check your email and password. Details: {e}"
+            )
+            print(
+                "Ensure that 'Less secure app access' or 'App passwords' are enabled for your email provider if you are using services like Gmail."
+            )
             return False
         except smtplib.SMTPConnectError as e:
-            print(f"SMTP Connection Error: Could not connect to the SMTP server. Details: {e}")
-            print("Ensure the server address and port are correct, and there are no firewall issues.")
+            print(
+                f"SMTP Connection Error: Could not connect to the SMTP server. Details: {e}"
+            )
+            print(
+                "Ensure the server address and port are correct, and there are no firewall issues."
+            )
             return False
         except Exception as e:
             print(f"An unexpected error occurred: {e}")
             return False
-        
+
+
 emailer = EmailSender(
     smtp_server=os.getenv("SMTP_SERVER"),
     port=int(os.getenv("SMTP_PORT", 465)),
     sender_email=os.getenv("SENDER_EMAIL"),
-    password=os.getenv("SENDER_PASSWORD"))
-
+    password=os.getenv("SENDER_PASSWORD"),
+)
